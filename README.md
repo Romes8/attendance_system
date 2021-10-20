@@ -1,2 +1,2 @@
 # attendance_system
-School system for attendance
+School system for attendance test
