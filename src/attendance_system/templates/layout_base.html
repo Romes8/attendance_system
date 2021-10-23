@@ -24,6 +24,11 @@
 	<link href="/media/com_finder/css/finder.css?ab1c22795eb73b72d6cdd28d8ccdd9a6" rel="stylesheet" />
 	<link href="/media/mod_languages/css/template.css?ab1c22795eb73b72d6cdd28d8ccdd9a6" rel="stylesheet" />
 
+	<!-- BOOTSRAP-->
+	{% block bootstrap %}
+
+	{% endblock%}
+
 
 
 
@@ -36,10 +41,10 @@
 				<div class="skip-main"><a>Hidden GEM</a></div>
 				<nav>
 					<ul class="nav menu mod-list">
-						<li class="item-366"><a target="_blank" rel="noopener noreferrer">-Role of person-</a></li>
-						<li class="item-367"><a target="_blank" rel="noopener noreferrer">-Name of person-</a></li>
+						<li class="item-366"><a target="_blank" rel="noopener noreferrer">{%block role%}{% endblock %}</a></li>
+						<li class="item-367"><a target="_blank" rel="noopener noreferrer">{%block username%}{% endblock %}</a></li>
 						<li class="item-368"><a target="_blank" rel="noopener noreferrer">|</a></li>
-						<li class="item-369"><a href="http://127.0.0.1:8000/index" target="_blank" rel="noopener noreferrer">Log out</a></li>
+						<li class="item-369"><a href="http://127.0.0.1:8000/login/" target="_blank" rel="noopener noreferrer">Log out</a></li>
 					</ul>
 				</nav>
 			</div>

@@ -20,7 +20,6 @@ from attendance_app.views import index_page, home_page, login_page
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_page, name='home'),
-    path('index/', index_page, name='index' ),
+    path('index/', index_page, name='index'),
     path('login/',login_page, name = 'login')
-
 ]
