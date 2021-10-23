@@ -79,8 +79,15 @@ WSGI_APPLICATION = 'attendance_system.wsgi.application'
 
 DATABASES = {
     'default': {  #multiplestatements needs to be set to false when doing database 
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'mysql.connector.django',
+        'NAME': 'rollcall',
+        'USER': 'root',
+        'PASSWORD': '*****',
+        'HOST': 'localhost',
+        'PORT': 3306,
+        'OPTIONS': {
+            'autocommit': True,
+        }
     }
 }
 

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import redirect
+from attendance_app.database import get_role, get_courses
 
 # Create your views here.
 def home_page(request, *args, **kwargs):
@@ -14,17 +15,27 @@ def index_page(request, *args, **kwargs):
     if request.method == 'POST':
         mydict = {}
         print("POST on index")
-        mydict['username'] = request.POST.get('username')
-        mydict['role'] = "Student"
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        role = get_role(username, password)
+        if role == 0:
+            ##error message
+            return render(request, "login.html")
+        mydict['username'] = username
+        mydict['role'] = role
 
         #session data needs to be stored here
-        request.session['username'] = request.POST.get('username')      # ---- for request.session dict there is  a need for database ----
-        request.session['role'] = "Teacher"
+        request.session['username'] = username     # ---- for request.session dict there is  a need for database ----
+        request.session['role'] = role
 
         print(request.session.get('username'))
         print(request.session.get('role'))
 
-        return render(request,"index.html", mydict)
+        data = []
+        if role == 'teacher':
+            data = get_courses(username)
+
+        return render(request,"index.html", {'data': data, 'mydict': mydict})
     else:
         #put procedure here maybe output is different
         rows = {}
