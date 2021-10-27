@@ -4,6 +4,7 @@ School system for attendance test
 Requirements:
 1. Design architecture - overall picture of system with description 
 2. Data flow 
+3. Scalability
 
 
 Steps how to build django app 
