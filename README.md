@@ -6,6 +6,7 @@ Requirements:
 2. Data flow 
 3. Scalability
 4. Clear requirements - state we have no parallel classes
+5. Make active classes for student - possible parallel classes 
 
 
 Steps how to build django app 
