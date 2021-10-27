@@ -77,12 +77,21 @@ WSGI_APPLICATION = 'attendance_system.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+#heroku database URL
+#        |   username  | pass   |       host                 |                     | no need for django
+#mysql://b9dcac94d41ae4:55fb2713@eu-cdbr-west-01.cleardb.com/heroku_a095ab98ce66108?reconnect=true
 DATABASES = {
     'default': {  #multiplestatements needs to be set to false when doing database 
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'heroku_attendance_database',
+        'USER': 'b9dcac94d41ae4',
+        'PASSWORD': '55fb2713',
+        'HOST': 'eu-cdbr-west-01.cleardb.com',
+        'PORT': '3306',
     }
 }
+
+
 
 
 # Password validation
