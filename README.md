@@ -8,6 +8,7 @@ Requirements:
 4. Clear requirements - state we have no parallel classes
 5. Make active classes for student - possible parallel classes 
 6. Internet connection falls down 
+7. Settings in teachers UI 
 
 
 Steps how to build django app 
