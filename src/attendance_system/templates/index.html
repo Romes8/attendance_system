@@ -6,11 +6,11 @@
 {%endblock bootstrap%}
 
 {%block username%}
-    {{username}}
+    {{mydict.username}}
 {%endblock username%}
 
 {%block role%}
-    {{role}}
+    {{mydict.role}}
 {%endblock role%}
 
 {% block content %}
@@ -77,75 +77,14 @@
                         <th scope = "col">Open</th>
                     </tr>
                 </thead>
-                
+                {% for row in data %}
                 <tr>
-                    <th scope="row">SD21</th>
-                    <td>Large systems</td>
-                    <td>Description to the given class. May be a bit longer</td>
+                    <th scope="row">{{ row.class }}</th>
+                    <td>{{ row.subject }}</td>
+                    <td>{{ row.desc }}</td>
                     <td><a href="#" class="btn btn-primary">Open class</a></td>
                 </tr>
-                <tr>
-                    <th scope="row">SD21</th>
-                    <td>Large systems</td>
-                    <td>Description to the given class. May be a bit longer</td>
-                    <td><a href="#" class="btn btn-primary">Open class</a></td>
-                </tr>
-            
-                <tr>
-                    <th scope="row">SD21</th>
-                    <td>Large systems</td>
-                    <td>Description to the given class. May be a bit longer</td>
-                    <td><a href="#" class="btn btn-primary">Open class</a></td>
-                </tr>
-            
-                <tr>
-                    <th scope="row">SD21</th>
-                    <td>Large systems</td>
-                    <td>Description to the given class. May be a bit longer</td>
-                    <td><a href="#" class="btn btn-primary">Open class</a></td>
-                </tr>
-            
-                <tr>
-                    <th scope="row">SD21</th>
-                    <td>Large systems</td>
-                    <td>Description to the given class. May be a bit longer</td>
-                    <td><a href="#" class="btn btn-primary">Open class</a></td>
-                </tr>
-            
-                <tr>
-                    <th scope="row">SD21</th>
-                    <td>Large systems</td>
-                    <td>Description to the given class. May be a bit longer</td>
-                    <td><a href="#" class="btn btn-primary">Open class</a></td>
-                </tr>
-            
-                <tr>
-                    <th scope="row">SD21</th>
-                    <td>Large systems</td>
-                    <td>Description to the given class. May be a bit longer</td>
-                    <td><a href="#" class="btn btn-primary">Open class</a></td>
-                </tr>
-                <tr>
-                    <th scope="row">SD21</th>
-                    <td>Large systems</td>
-                    <td>Description to the given class. May be a bit longer</td>
-                    <td><a href="#" class="btn btn-primary">Open class</a></td>
-                </tr>
-            
-                <tr>
-                    <th scope="row">SD21</th>
-                    <td>Large systems</td>
-                    <td>Description to the given class. May be a bit longer</td>
-                    <td><a href="#" class="btn btn-primary">Open class</a></td>
-                </tr>
-            
-                <tr>
-                    <th scope="row">SD21</th>
-                    <td>Large systems</td>
-                    <td>Description to the given class. May be a bit longer</td>
-                    <td><a href="#" class="btn btn-primary">Open class</a></td>
-                </tr>
-            
+                {% endfor %}
             
             
             </table>
