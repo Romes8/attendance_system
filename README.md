@@ -1,14 +1,13 @@
-# attendance_system
-## School system for attendance test
+# School system for attendance test
 
 ### Requirements:
-1. [] Design architecture - overall picture of system with description 
-2. [] Data flow 
-3. [] Scalability
-4. [] Clear requirements - state we have no parallel classes
-5. [] Make active classes for student - possible parallel classes 
-6. [] Internet connection falls down 
-7. [] Settings in teachers UI 
+1. [ ] Design architecture - overall picture of system with description 
+2. [ ] Data flow 
+3. [ ] Scalability
+4. [ ] Clear requirements - state we have no parallel classes
+5. [ ] Make active classes for student - possible parallel classes 
+6. [ ] Internet connection falls down 
+7. [ ] Settings in teachers UI 
 
 
 ### Steps how to build django app 
