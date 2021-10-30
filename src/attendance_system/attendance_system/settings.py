@@ -83,10 +83,10 @@ WSGI_APPLICATION = 'attendance_system.wsgi.application'
 DATABASES = {
     'default': {  #multiplestatements needs to be set to false when doing database 
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'heroku_attendance_database',
-        'USER': 'b9dcac94d41ae4',
-        'PASSWORD': '55fb2713',
-        'HOST': 'eu-cdbr-west-01.cleardb.com',
+        'NAME': 'qr8jfeyxl3qg3wq2',
+        'USER': 'yc65duearapfot5j',
+        'PASSWORD': 'f7jk0qvi2rrh0xnd',
+        'HOST': 'esilxl0nthgloe1y.chr7pe7iynqr.eu-west-1.rds.amazonaws.com',
         'PORT': '3306',
     }
 }
