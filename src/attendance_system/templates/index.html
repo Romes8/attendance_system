@@ -20,11 +20,11 @@
         <h1>{{role}}</h1>
         <h1><span id="cur_time"></span></h1>
     {% else %}
-        <h1>Teacher</h1>
-        <div class = "container-fluid">
-            <h1 style="text-align: center;"><span id="cur_time"></span></h1>
+        <div class = "container-fluid" style="text-align: center;">
+            <h1>{{ mydict.username }}</h1>
+            <h1><span id="cur_time"></span></h1>
         </div>
-        
+
         <div class="container-md">
             <div class="row">
                 <div class="col-sm-3">
@@ -67,13 +67,13 @@
         </div>
         <br>
         </br>
+        {% if data %}
         <div class = "container-md">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th scope = "col">Class</th>
                         <th scope = "col">Subject name</th>
-                        <th scope = "col">Description</th>
                         <th scope = "col">Open</th>
                     </tr>
                 </thead>
@@ -81,15 +81,14 @@
                 <tr>
                     <th scope="row">{{ row.class }}</th>
                     <td>{{ row.subject }}</td>
-                    <td>{{ row.desc }}</td>
                     <td><a href="#" class="btn btn-primary">Open class</a></td>
                 </tr>
                 {% endfor %}
-            
-            
+
+
             </table>
         </div>
-        
+        {% endif %}
     {% endif %}
     
 
