@@ -57,13 +57,6 @@ def index_page(request, *args, **kwargs):
             print("Not loggen in")
             return redirect("/login/", {})
        
-       
-        rows = {}
-        rows['name'] = "Class 1"
-        rows['desc'] = "Lorem ipsum this needs to be the description to each card for that card. Make it in database"
-        print(rows)
-        stats = []
-
         print("GET on index")
         return render(request, "index.html", {'sessionDict': sessionDict})
 
@@ -78,7 +71,6 @@ def login_page(request, *args, **kwargs):
     # refers to index page and what contect is going to be displayed  when post method is applied
     if request.method == 'GET':
         print("Get method activated")
-        
         return render(request, "login.html", {'wrongLogin': wrongLogin}) #sending message for wrong login
 
 def logout(request):
