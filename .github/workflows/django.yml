@@ -27,9 +27,4 @@ jobs:
         
     - name: Run Tests
       run: |
-        cd Scripts
-        activate.bat
-        cd ..
-        cd src 
-        cd attendance_system
         python manage.py test
