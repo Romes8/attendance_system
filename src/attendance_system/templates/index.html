@@ -6,11 +6,11 @@
 {%endblock bootstrap%}
 
 {%block username%}
-    {{mydict.username}}
+    {{sessionDict.username}}
 {%endblock username%}
 
 {%block role%}
-    {{mydict.role}}
+    {{sessionDict.role}}
 {%endblock role%}
 
 {% block content %}
@@ -21,7 +21,7 @@
         <h1><span id="cur_time"></span></h1>
     {% else %}
         <div class = "container-fluid" style="text-align: center;">
-            <h1>{{ mydict.username }}</h1>
+            <h1>{{ sessionDict.username }}</h1>
             <h1><span id="cur_time"></span></h1>
         </div>
 

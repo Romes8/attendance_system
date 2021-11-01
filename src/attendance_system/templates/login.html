@@ -23,6 +23,11 @@
 				<img class="kea">
 				<h4><span>Attendance</span></h4>
 				<p>Welcome back! Log in to your account to check in.</p>
+				{% if wrongLogin == 'true' %}
+					<p class="error_msg">
+						Wrong credentials inserted or user does not exist. Try again. 
+					</p>
+				{% endif %}
 					<div class="floating-label">
 						<input placeholder="Username" type="username" name="username" id="username" autocomplete="off">
 						<label for="username">Username:</label>
@@ -67,3 +72,9 @@
 	 	 	
 </body>
 </html>
+
+<style>
+	.error_msg{
+		color:red;
+	}
+</style>

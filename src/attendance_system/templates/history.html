@@ -6,14 +6,15 @@
 {%endblock bootstrap%}
 
 {%block username%}
-    {{mydict.username}}
+    {{sessionDict.username}}
 {%endblock username%}
 
 {%block role%}
-    {{mydict.role}}
+    {{sessionDict.role}}
 {%endblock role%}
 
 {% block content %}
+<br>
     <div class="container-md">
         <table class="table table-striped">
             <tr>

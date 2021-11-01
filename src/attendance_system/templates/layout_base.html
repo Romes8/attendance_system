@@ -35,7 +35,7 @@
 						<li class="item-366">{%block role%}{% endblock %}</a></li>
 						<li class="item-367">{%block username%}{% endblock %}</a></li>
 						<li class="item-368">|</li>
-						<li class="item-369"><a href="http://127.0.0.1:8000/login/" rel="noopener noreferrer">Log out</a></li>
+						<li class="item-369"><a href="http://127.0.0.1:8000/logout/" rel="noopener noreferrer">Log out</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -54,7 +54,7 @@
 			</div>
 			<nav class="hidden-xs hidden-sm">
 				<ul class="nav menu dropdown mod-list">
-                    {% if mydict.role == "student" %}
+                    {% if sessionDict.role == "student" %}
                         <li><a href="/history">History</a></li>
 					{% endif %}
                     <li><a href="/classes" >Classes</a></li>
