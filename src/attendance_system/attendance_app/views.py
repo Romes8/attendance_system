@@ -8,7 +8,7 @@ from attendance_app.database import get_role, get_courses, history, get_userID
 def home_page(request, *args, **kwargs):
     print(args, kwargs)
     # print(request.user)  --need for superuser i guess
-    return render(request, "layout_base.html", {})
+    return redirect("/login/", {})
 
 
 def index_page(request, *args, **kwargs):
@@ -19,7 +19,7 @@ def index_page(request, *args, **kwargs):
         password = request.POST.get('password')
         role = get_role(username, password)
         if not role:
-            return render(request, "login.html")
+            return redirect("/login/", {})
         else:
             mydict['username'] = username
             mydict['role'] = role
