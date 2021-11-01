@@ -27,4 +27,7 @@ jobs:
         
     - name: Run Tests
       run: |
+        .\Scripts\activate
+        cd src 
+        cd attendance_system
         python manage.py test
