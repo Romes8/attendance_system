@@ -28,6 +28,7 @@ jobs:
       run: |
         pip install flake8
         pip install Django==3.2.8
+        pip install pymysql
     - name: Coverage report
       run: | 
         pip install coverage
