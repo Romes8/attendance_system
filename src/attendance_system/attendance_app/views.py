@@ -1,9 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from attendance_app.models import Login, Rooms
 from attendance_app.database import get_role, get_courses, history, get_userID_name
-from hashlib import sha1
 sessionDict = {}
 wrongLogin = 'false' #variable for error diplay message while logging in 
 
