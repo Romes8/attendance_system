@@ -81,7 +81,7 @@ def login_page(request, *args, **kwargs):
         
         return render(request, "login.html", {'wrongLogin': wrongLogin}) #sending message for wrong login
 
-def logout(request):
+def logout_page(request):
     try:
         del request.session['login']
         sessionDict.clear()
