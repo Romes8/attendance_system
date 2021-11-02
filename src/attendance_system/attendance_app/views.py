@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from attendance_app.database import get_role, get_courses, history, get_userID
+from attendance_app.models import Login, Rooms
+from attendance_app.database import get_role, get_courses, history, get_userID_name
+from hashlib import sha1
 sessionDict = {}
 wrongLogin = 'false' #variable for error diplay message while logging in 
 
@@ -19,6 +21,7 @@ def index_page(request, *args, **kwargs):
         print("POST on index")
         username = request.POST.get('username')
         password = request.POST.get('password')
+    
         role = get_role(username, password)
         if not role:
            
@@ -31,12 +34,13 @@ def index_page(request, *args, **kwargs):
             request.session['login'] = "True"
             request.session['username'] = username  
             request.session['role'] = role
-            request.session['id'] = get_userID(role, username)
+            request.session['id'], name = get_userID_name(role, username)
             request.session.set_expiry(1200)
 
             sessionDict['username'] = request.session.get('username')
             sessionDict['role'] = request.session.get('role')
             sessionDict['id'] = request.session.get('id')
+            sessionDict['name'] = name
 
             print(request.session.get('username'))
             print(request.session.get('role'))
@@ -44,7 +48,7 @@ def index_page(request, *args, **kwargs):
 
             if role == 'teacher':
                 data = []
-                data = get_courses(username)
+                data = get_courses(sessionDict['id'])
                 
                 return render(request, "index.html", {'data': data, 'sessionDict': sessionDict})
             return render(request, "index.html", {'sessionDict': sessionDict})

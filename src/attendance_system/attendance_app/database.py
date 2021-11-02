@@ -1,58 +1,61 @@
-from django.db import connection
-from datetime import datetime
+from attendance_app.models import Login, Students, TeacherCourse, Teachers, ClassCourses, Classes, Courses, Attendance
+from hashlib import sha1
+
+
 
 def get_role(username, password):
-    cur = connection.cursor()
     try:
-        func = "SELECT checkLogin(%s,SHA1(%s))"
-        cur.execute(func, (username, password))
-        role = cur.fetchone()[0]
-        return role
-    finally:
-        cur.close()
+        l = Login.objects.get(username=username)
+        if l.password == sha1(sha1(password.encode()).digest()).hexdigest().upper():
+            return l.role.name
+        else:
+            return None
+    except:
+        Exception
 
 
-def get_userID(role, username):
-    cur = connection.cursor()
+def get_userID_name(role, username):
     try:
+        user_id = Login.objects.get(username=username).id
         if role == 'student':
-            cur.execute("SELECT getStudentID(%s)", username)
-        elif role == 'teacher':
-            cur.execute("SELECT getTeacherID(%s", username)
-        user_id = int(cur.fetchone()[0])
-        return user_id
-    finally:
-        cur.close()
+            user = Students.objects.get(user_id=user_id)
+        else :
+            user = Teachers.objects.get(user_id=user_id)
+        id = user.id
+        name = user.lastname + ' ' + user.firstname
+        return id, name
+    except:
+        raise Exception
+        
 
 
-def get_courses(username):
-    cur = connection.cursor()
+
+def get_courses(id):
     try:
         data = []
-        print("calling")
-        cur.callproc("teacher_courses", [username, ])
-        print("executed")
-        for record in cur.fetchall():
-            print(record)
-            data.append(
-                {
-                    "class": record[0],
-                    "subject": record[1]
-                }
-            )
-            print(data)
+        query_results = TeacherCourse.objects.filter(teacher=id)
+        print(query_results)
+        for query in query_results:
+            data.append({
+                    "class": query.course_class.class_field.name,
+                    "subject": query.course_class.course.subject})
         return data
 
-    finally:
-        cur.close()
+    except:
+        Exception
 
-def history(student_id, sort):
-    cur = connection.cursor()
+def history(id, sort):
     try:
         data = []
-        cur.callproc("history", [student_id, sort])
-        for row in cur.fetchall():
-            data.append({'date': row[0].strftime("%Y-%m-%d"), 'subject': row[1], 'status': row[2]})
+        order = "-block__date"
+        if sort == 'subject':
+            order = "block__teacher_course__course_class__course__subject"
+        query_results = Attendance.objects.select_related("block").order_by(order).filter(student_id=id)
+        for query in query_results:
+            data.append({
+                'date': query.block.date.strftime("%Y-%m-%d, %H:%M:%S"), 
+                'subject': query.block.teacher_course.course_class.course.subject, 
+                'status': query.status})
         return data
-    finally:
-        cur.close()
+    except:
+        Exception
