@@ -25,6 +25,12 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         
-    - name: Run Tests
-      run: |
-        python manage.py test
+    - name: Run vemv
+      shell: |
+       .\Scripts\activate
+       cd src 
+       cd attendance_system 
+       python manage.py test
+       
+ 
+       
