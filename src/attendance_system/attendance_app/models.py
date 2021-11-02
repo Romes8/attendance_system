@@ -4,7 +4,9 @@ class Login(models.Model):
     username = models.CharField(unique=True, max_length=20, blank=True, null=True)
     password = models.CharField(max_length=40)
     role = models.ForeignKey('Roles', models.DO_NOTHING, db_column='role', blank=True, null=True)
-
+    last_login = models.DateTimeField(blank=True, null=True)
+    is_active = models.IntegerField()
+    
     class Meta:
         managed = False
         db_table = 'login'
@@ -101,3 +103,13 @@ class Blocks(models.Model):
     class Meta:
         managed = False
         db_table = 'blocks'
+
+class Settings(models.Model):
+    teacher = models.OneToOneField('Teachers', models.DO_NOTHING, primary_key=True)
+    isblocks = models.IntegerField(db_column='isBlocks')  # Field name made lowercase.
+    checkinperiod = models.IntegerField(db_column='checkInPeriod')  # Field name made lowercase.
+    reminder = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'settings'

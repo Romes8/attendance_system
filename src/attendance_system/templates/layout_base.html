@@ -7,7 +7,6 @@
 			<link rel="icon" type="image/png" sizes="32x32" href="https://kea.dk/images/resources/kea_32.png">
 			<link rel="icon" type="image/png" sizes="96x96" href="https://kea.dk/images/resources/kea_96.png">
 		<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link rel="preconnect" href="https://cdnjs.cloudflare.com">
 	<meta charset="utf-8" />
 	<base href="http://127.0.0.1:8000" />
 	<meta name="author" content="Roman Zvoda" />
@@ -24,7 +23,7 @@
 
 
 </head>
-<body class="site com_content view-article no-layout no-task itemid-114">
+<body>
 	<div class="page-wrapper">
 		<div class="default-header">
 			<div class="extra-navigation hidden-xs hidden-sm">
@@ -35,7 +34,7 @@
 						<li class="item-366">{%block role%}{% endblock %}</a></li>
 						<li class="item-367">{%block username%}{% endblock %}</a></li>
 						<li class="item-368">|</li>
-						<li class="item-369"><a href="http://127.0.0.1:8000/logout/" rel="noopener noreferrer">Log out</a></li>
+						<li class="item-369"><a href="/logout/" rel="noopener noreferrer">Log out</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -55,10 +54,13 @@
 			<nav class="hidden-xs hidden-sm">
 				<ul class="nav menu dropdown mod-list">
                     {% if sessionDict.role == "student" %}
-                        <li><a href="/history">History</a></li>
+                        <li><a href="/history/">History</a></li>
+					{% else %}
+					
+                    <li><a href="/classes/" >Classes</a></li>
+					<li><a href="/settings/">Preferences</a></li>
 					{% endif %}
-                    <li><a href="/classes" >Classes</a></li>
-				</ul>
+				</ul> 
 			</nav>
 		</div>
 	</div>

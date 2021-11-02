@@ -1,0 +1,60 @@
+{% extends 'layout_base.html' %}
+{% load static %}
+
+{%block bootstrap%}
+    
+{%endblock bootstrap%}
+
+{%block username%}
+    {{sessionDict.username}}
+{%endblock username%}
+
+{%block role%}
+    {{sessionDict.role}}
+{%endblock role%}
+
+{% block content %}
+<br>
+    <div class = "container-fluid" style="text-align: center;">
+        <h1 class=name>Settings</h1>
+        <h1><span id="cur_time"></span></h1>
+    </div>
+<br>
+    <div class="container-md">
+    <table class="table table-striped">>
+        <tr>
+            <td>Check attendance for blocks</td>
+            <td>
+                <div>
+                    <input type="checkbox" />
+                    <span></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Minutes available to check in</td>
+            <td>
+                <div>
+                    <input type="checkbox" />
+                    <span></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Reminder</td>
+            <td>
+                <div>
+                    <input type="checkbox" checked="" />
+                    <span></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Save Settings" >
+            </td>
+        </tr>
+    </table>
+</div>
+{% endblock content %}
+
