@@ -32,7 +32,7 @@ jobs:
     - name: Coverage report
       run: | 
         pip install coverage
-        python ./src/attendance_system/manage.py test
+        python manage.py test
         
         
 
