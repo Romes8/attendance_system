@@ -1,7 +1,8 @@
-from attendance_app.models import Settings, Blocks, Login, Students, TeacherCourse, Teachers, ClassCourses, Classes, Courses, Attendance
+from attendance_app.models import StudentClass, Settings, Blocks, Login, Students, TeacherCourse, Teachers, ClassCourses, Classes, Courses, Attendance
 from hashlib import sha1
 import datetime
 from django.contrib.auth.backends import BaseBackend
+
 
 
 
@@ -12,7 +13,6 @@ class MyBackend(BaseBackend):
             if l.password == sha1(sha1(password.encode()).digest()).hexdigest().upper():
                 return l
         else:
-            print("hey")
             return None
 
 
@@ -79,9 +79,57 @@ def settings(id):
         data = []
         query = Settings.objects.get(teacher=id)
         data.append({
-            'isBlocks': query.isBlocks,
-            'period': query.checkInPeriod,
+            'isBlocks': query.isblocks,
+            'period': query.checkinperiod,
             'reminder': query.reminder})
         return data
+    except:
+        Exception
+
+def activate_lesson(id, date):
+    try:
+        id = TeacherCourse.objects.get(teacher=id).id
+        blocks = Blocks.objects.filter(teacher_course=id, date__contains=datetime.date(date))
+        for block in blocks:
+            block.is_active = True
+            block.save(update_fields=["is_active"])
+    except:
+        Exception
+
+def deactivate_lesson(id, date):
+    try:
+        id = TeacherCourse.objects.get(teacher=id).id
+        lesson = Blocks.objects.filter(teacher_course=id, date__contains=datetime.date(date))
+        for block in lesson:
+            block.is_active = False
+            block.save(update_fields=["is_active"])
+    except:
+        Exception
+
+def activate_block(id, dateTime):
+    try:
+        id = TeacherCourse.objects.get(teacher=id).id
+        block = Blocks.objects.get(teacher_course=id, date=datetime.date(dateTime))
+        block.is_active = True
+        block.save(update_fields=["is_active"])
+    except:
+        Exception
+
+def deactivate_block(id, dateTime):
+    try:
+        id = TeacherCourse.objects.get(teacher=id).id
+        block = Blocks.objects.get(teacher_course=id, date=datetime.date(dateTime))
+        block.is_active = False
+        block.save(update_fields=["is_active"])
+    except:
+        Exception
+
+def check_active():
+    try:
+        class_id = StudentClass.objects.get(student=id).class_field
+        class_course_id = ClassCourses.objects.get(class_field=class_id).id
+        teacher_course_id = TeacherCourse.objects.get(course_class=class_course_id).id
+        block = Blocks.objects.get(teacher_course=teacher_course_id, date=datetime.date(date))
+        return block.is_active
     except:
         Exception

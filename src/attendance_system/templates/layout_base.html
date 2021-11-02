@@ -68,6 +68,7 @@
 	{% block content %}
 	
 	{% endblock %}
+	<input type="hidden" id="custId" name="custId" value="3487">
 </body>
 </html>
 
@@ -81,3 +82,24 @@
 		font-family: 'Courier New', Courier, monospace;
 	}
 </style>
+
+
+
+<script type="text/javascript">
+	
+		if (confirm("Extend session ?")) {
+			var result = true;
+		} 
+		else{
+			var result = false;
+		}
+		
+		// var xhr = new XMLHttpRequest();
+		// var url = "/notification/";
+
+		// xhr.open("POST", url, true);
+		// xhr.setRequestHeader("Content-Type", "application/json");
+		// var data = JSON.stringify({ "result": result, "csrfmiddlewaretoken": '{{ csrf_token }}'});
+		// xhr.send(data)
+
+</script>

@@ -1,12 +1,14 @@
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, request
 from django.shortcuts import redirect
+import js2py
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, logout
+from django.contrib.auth import SESSION_KEY, login, logout
 import attendance_app.database as database
-from attendance_app.database import settings, get_role, get_courses, history, get_userID_name
-from attendance_app.models import Login
+from attendance_app.database import activate_block, settings, get_role, get_courses, history, get_userID_name
+from attendance_app.models import DjangoSession, Login
+from datetime import datetime, timedelta
 sessionDict = {}
 user = None
 wrongLogin = 'false' #variable for error diplay message while logging in 
@@ -18,6 +20,7 @@ def login_page(request):
     global wrongLogin
     global sessionDict
     global user
+        
     if request.method == 'GET':
         print("Get method activated")
 
@@ -31,6 +34,11 @@ def login_page(request):
         print(user)
         if user is not None:
             login(request, user=user)
+            request.session.set_expiry(20)
+            request.session['alert'] = True
+
+            if request.session.exists(session_key=request.session.session_key):
+                print(request.session.session_key)
             sessionDict['username'] = user.username
             sessionDict['role'] = user.role.name
             sessionDict['id'], sessionDict['name'] = get_userID_name(sessionDict['role'], sessionDict['username'])
@@ -99,5 +107,27 @@ def settings_page(request):
     else:
         return redirect('/login/')
 
-if "Vartic1" in subprocess.check_output(['netsh', 'wlan', 'show', 'interfaces']).decode('utf-8'):
+def active_session(request):
+    session_key = request.session.session_key
+    if request.session.exists(session_key):
+        record = DjangoSession.objects.get(session_key=session_key)
+        if record.expire_date < datetime.now():
+            if extend_session():
+                request.session['alert'] = True
+                record.expire_date = datetime.now() + timedelta(minutes=20)
+                return True                         #session extended 
+            else:
+                record.delete()
+                return False                        #session disconnected
+        return True                                 #session still active             
+    else:
+        return False                                #session disconnected
+
+def extend_session(request):
+    print(request.POST)
+    
+    return True
+# check for the right wifi connection 
+
+if "Vartic2" in subprocess.check_output(['netsh', 'wlan', 'show', 'interfaces']).decode('utf-8'):
     print('good network')

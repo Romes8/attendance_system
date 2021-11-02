@@ -99,6 +99,7 @@ class Blocks(models.Model):
     teacher_course = models.ForeignKey('TeacherCourse', models.DO_NOTHING)
     room = models.ForeignKey('Rooms', models.DO_NOTHING)
     date = models.DateTimeField()
+    is_active = models.IntegerField()
 
     class Meta:
         managed = False
@@ -113,3 +114,22 @@ class Settings(models.Model):
     class Meta:
         managed = False
         db_table = 'settings'
+
+
+class DjangoSession(models.Model):
+    session_key = models.CharField(primary_key=True, max_length=40)
+    session_data = models.TextField()
+    expire_date = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'django_session'
+
+class StudentClass(models.Model):
+    student = models.OneToOneField('Students', models.DO_NOTHING, primary_key=True)
+    class_field = models.ForeignKey(Classes, models.DO_NOTHING, db_column='class_id')  # Field renamed because it was a Python reserved word.
+
+    class Meta:
+        managed = False
+        db_table = 'student_class'
+        unique_together = (('student', 'class_field'),)
