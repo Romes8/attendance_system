@@ -2,7 +2,6 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.http import HttpResponse, request
 from django.shortcuts import redirect
-import js2py
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import SESSION_KEY, login, logout
 import attendance_app.database as database

@@ -2,7 +2,6 @@
 {% load static %}
 
 {%block bootstrap%}
-    
 {%endblock bootstrap%}
 
 {%block username%}
@@ -17,11 +16,10 @@
     
     <br>
         <div class = "container-fluid" style="text-align: center;">
-            <h2 class=name>{{ sessionDict.name }}</h2>
+            <h1>{{ sessionDict.name }}</h1>
             <h1><span id="cur_time"></span></h1>
         </div>
-        {% if data %}
-        
+        {% if data %} 
         <br>
         </br>
         <div class = "container-md">
@@ -46,9 +44,73 @@
 
             </table>
         </div>
-        {% endif %}
+        {% else %}
+        <div class="div">
+            <div class="div--">
+                <h1>Active classes: </h1>
+            </div>
+            <div class="div-div">
+                <h1>Lesson name</h1>
+            </div>
+            <div class="div-div">
+                <h2>Enter code for lesson: </h2>
+                <input type="text"></input>
+            </div>
+            <div class="div-div">
+                <button onclick="" class="but">Attend Lesson</button>
+            </div>
+            <div class="div-div">
+                <h1>Lesson name</h1>
+            </div>
+            <div class="div-div">
+                <h2>Enter code for lesson: </h2>
+                <input type="text"></input>
+            </div>
+            <div class="div-div">
+                <button onclick="" class="but">Attend Lesson</button>
+            </div>
+        </div>
+        {%endif%}
     
+    <style>
+        .div {
+            width: 90%;
+            height: 40%;
+            margin: 5%;
+        }
 
+        .div-div {
+            width: 33%;
+            height: 100px;
+            border-top: 1px solid #000;
+            float: left;
+        }
+
+        .div-- {
+            width: 90%;
+            height: 100px;
+            float: center;
+        }
+
+        .nav_text{
+            font-size: 19px;
+        }
+    
+        .big_text{
+            font-size: xx-large;
+        }
+
+        .but{
+            background-color:#44c767;
+            border-radius:10px;
+            border:3px solid #18ab29;
+            display:inline-block;
+            cursor:pointer;
+            color:#ffffff;
+            font-size:19px;
+            padding:23px 49px;
+        }
+    </style>
     <!-- BOOTSRAP-->
     <script type="text/javascript" charset="utf-8">
         var cur_time = document.getElementById('cur_time');
