@@ -50,6 +50,7 @@ def get_courses(id):
             rooms = Blocks.objects.get(teacher_course=query.id, date = '2021-10-12 8:30:00').room
             room = rooms.campus.name +  ' ' + rooms.building + ' ' + str(rooms.room)
             data.append({
+                    "id": query.id,
                     "class": query.course_class.class_field.name,
                     "subject": query.course_class.course.subject,
                     "room": room})
@@ -76,51 +77,51 @@ def history(id, sort):
 
 def settings(id):
     try:
-        data = []
         query = Settings.objects.get(teacher=id)
-        data.append({
+        data = {
             'isBlocks': query.isblocks,
             'period': query.checkinperiod,
-            'reminder': query.reminder})
+            'reminder': query.reminder}
         return data
     except:
         Exception
 
-def activate_lesson(id, date):
+def activate_lesson(id, date, code):
     try:
-        id = TeacherCourse.objects.get(teacher=id).id
-        blocks = Blocks.objects.filter(teacher_course=id, date__contains=datetime.date(date))
+        blocks = Blocks.objects.filter(teacher_course=id, date__contains=datetime.date(date.year, date.month, date.day))
         for block in blocks:
+            block.code = code
             block.is_active = True
-            block.save(update_fields=["is_active"])
+            block.save(update_fields=["is_active", "code"])
     except:
         Exception
 
 def deactivate_lesson(id, date):
     try:
-        id = TeacherCourse.objects.get(teacher=id).id
-        lesson = Blocks.objects.filter(teacher_course=id, date__contains=datetime.date(date))
+        lesson = Blocks.objects.filter(teacher_course=id, date__contains=datetime.date(date.year, date.month, date.day))
         for block in lesson:
             block.is_active = False
             block.save(update_fields=["is_active"])
     except:
         Exception
 
-def activate_block(id, dateTime):
+def activate_block(id, date, code):
     try:
-        id = TeacherCourse.objects.get(teacher=id).id
-        block = Blocks.objects.get(teacher_course=id, date=datetime.date(dateTime))
-        block.is_active = True
-        block.save(update_fields=["is_active"])
+        blocks = Blocks.objects.filter(teacher_course=id, date__contains=datetime.date(2021, 10, 12), date__hour=8)
+        print(blocks)
+        for block in blocks:
+            block.code = code
+            block.is_active = True
+            block.save(update_fields=["is_active","code"])
     except:
         Exception
 
 def deactivate_block(id, dateTime):
     try:
-        id = TeacherCourse.objects.get(teacher=id).id
-        block = Blocks.objects.get(teacher_course=id, date=datetime.date(dateTime))
-        block.is_active = False
-        block.save(update_fields=["is_active"])
+        blocks = Blocks.objects.get(teacher_course=id, date=datetime.date(dateTime))
+        for block in blocks:
+            block.is_active = False
+            block.save(update_fields=["is_active"])
     except:
         Exception
 
@@ -131,5 +132,14 @@ def check_active():
         teacher_course_id = TeacherCourse.objects.get(course_class=class_course_id).id
         block = Blocks.objects.get(teacher_course=teacher_course_id, date=datetime.date(date))
         return block.is_active
+    except:
+        Exception
+
+def check_entered_code(block_id,code):
+    try:
+        valid_code = Blocks.objects.get(id=block_id).code
+        if code == valid_code:
+            return True
+        return False
     except:
         Exception

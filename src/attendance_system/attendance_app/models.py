@@ -100,6 +100,7 @@ class Blocks(models.Model):
     room = models.ForeignKey('Rooms', models.DO_NOTHING)
     date = models.DateTimeField()
     is_active = models.IntegerField()
+    code = models.CharField(max_length=10)
 
     class Meta:
         managed = False

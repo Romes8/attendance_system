@@ -1,0 +1,19 @@
+{% extends 'layout_base.html' %}
+{% load static %}
+
+{%block bootstrap%}
+    
+{%endblock bootstrap%}
+
+{%block username%}
+    {{sessionDict.username}}
+{%endblock username%}
+
+{%block role%}
+    {{sessionDict.role}}
+{%endblock role%}
+
+{% block content %}
+<br>
+<h1 style="text-align: center;">{{code}}</h1>
+{% endblock content %}

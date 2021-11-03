@@ -2,12 +2,14 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.http import HttpResponse, request
 from django.shortcuts import redirect
-from django.contrib.auth.decorators import login_required
+import js2py
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import SESSION_KEY, login, logout
 import attendance_app.database as database
-from attendance_app.database import activate_block, settings, get_role, get_courses, history, get_userID_name
+from attendance_app.database import activate_block, check_active, check_entered_code, settings, get_role, get_courses, history, get_userID_name
 from attendance_app.models import DjangoSession, Login
 from datetime import datetime, timedelta
+import json
 sessionDict = {}
 user = None
 wrongLogin = 'false' #variable for error diplay message while logging in 
@@ -100,11 +102,25 @@ def settings_page(request):
         if user.is_active:
             if sessionDict['role'] == 'teacher':
                 data = settings(sessionDict['id'])
+                print(data)
+                print(sessionDict)
                 return render(request, "settings.html", {'sessionDict': sessionDict, 'data': data})
             else:
                 return redirect('/index/')
-    else:
-        return redirect('/login/')
+    return redirect('/login/')
+
+def active_class(request, teacher_course):
+    if user is not None:
+        if user.is_active:
+            if sessionDict['role'] == 'teacher':
+                curDate = datetime.now()
+                code = random_string()
+                activate_block(teacher_course, curDate, code)
+                return render(request, "active_page.html", {'code':code})
+            return redirect('/index/')
+    return redirect('/login/')
+
+
 
 def active_session(request):
     session_key = request.session.session_key
@@ -126,6 +142,28 @@ def extend_session(request):
     print(request.POST)
     
     return True
+
+
+@csrf_exempt
+def check_code(request):
+    code = json.loads(request.POST.get('json_data'))['code']
+    print(code)
+    if check_entered_code(1,code):
+        return HttpResponse("Valid Code!")
+    return HttpResponse("Invalid Code!")
+
+
+import random
+import string
+def random_string():
+    str = ''.join((random.choice(string.ascii_uppercase) for x in range(4)))
+    str += ''.join((random.choice(string.digits) for x in range(2)))
+    lst = list(str)
+    random.shuffle(lst)
+    finalStr = ''.join(lst)
+    return finalStr
+
+
 # check for the right wifi connection 
 
 if "Vartic2" in subprocess.check_output(['netsh', 'wlan', 'show', 'interfaces']).decode('utf-8'):
