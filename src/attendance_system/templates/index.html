@@ -45,16 +45,16 @@
             </table>
         </div>
         {% else %}
-            {% if block_id != None %}
+            {% if block_id == None %}
             <div class="div">
                 <div class="div--">
                     <h1>Active classes: </h1>
                 </div>
                 <div class="div-div">
-                    <h1>Lesson name</h1>
+                    <h2>Lesson name</h2>
                 </div>
                 <div class="div-div">
-                    <h2>Enter code for lesson: </h2>
+                    <h2>Enter code: </h2>
                     <input id="code" type="text" class="code_form"></input>
                 </div>
                 <div class="div-div">
