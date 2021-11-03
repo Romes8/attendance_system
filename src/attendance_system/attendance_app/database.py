@@ -125,13 +125,19 @@ def deactivate_block(id, dateTime):
     except:
         Exception
 
-def check_active():
+def check_active(id, date):
     try:
-        class_id = StudentClass.objects.get(student=id).class_field
-        class_course_id = ClassCourses.objects.get(class_field=class_id).id
+        class_id = StudentClass.objects.get(student=id).class_field.id
+        print(class_id)
+        class_course_id = ClassCourses.objects.filter(class_field=1)
+        print(class_course_id)
         teacher_course_id = TeacherCourse.objects.get(course_class=class_course_id).id
-        block = Blocks.objects.get(teacher_course=teacher_course_id, date=datetime.date(date))
-        return block.is_active
+        print(teacher_course_id)
+        block = Blocks.objects.get(teacher_course=teacher_course_id, date__contains=datetime.date(2021, 10, 12))
+        print(block)
+        if block.is_active:
+            print("true")
+            return block.id
     except:
         Exception
 

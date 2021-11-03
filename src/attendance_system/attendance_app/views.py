@@ -2,7 +2,6 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.http import HttpResponse, request
 from django.shortcuts import redirect
-import js2py
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import SESSION_KEY, login, logout
 import attendance_app.database as database
@@ -82,7 +81,9 @@ def index_page(request):
             if sessionDict['role'] == 'teacher':
                 data = get_courses(sessionDict['id'])
                 return render(request, "index.html", {'sessionDict': sessionDict, 'data': data})
-            return render(request, "index.html", {'sessionDict': sessionDict})
+            else:
+                block_id = check_active(sessionDict['id'], datetime.now())
+                return render(request, "index.html", {'sessionDict': sessionDict, 'block_id': block_id})
     else:
         return redirect('/login/')
 
@@ -146,9 +147,10 @@ def extend_session(request):
 
 @csrf_exempt
 def check_code(request):
-    code = json.loads(request.POST.get('json_data'))['code']
-    print(code)
-    if check_entered_code(1,code):
+    data = json.loads(request.POST.get('json_data'))
+    code = data['code']
+    block_id = data['block_id']
+    if check_entered_code(block_id,code):
         return HttpResponse("Valid Code!")
     return HttpResponse("Invalid Code!")
 
