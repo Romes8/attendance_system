@@ -19,7 +19,7 @@
             <h1>{{ sessionDict.name }}</h1>
             <h1><span id="cur_time"></span></h1>
         </div>
-        {% if data %} 
+        {% if sessionDict.role == "teacher" %} 
         <br>
         </br>
         <div class = "container-md">
@@ -37,7 +37,7 @@
                     <th scope="row">{{ row.class }}</th>
                     <td>{{ row.subject }}</td>
                     <td>{{ row.room }}</td>
-                    <td><a href="#" class="btn btn-primary">Open class</a></td>
+                    <td><a href="/block/{{row.id}}/" class="btn btn-primary">Open class</a></td>
                 </tr>
                 {% endfor %}
 
@@ -45,21 +45,27 @@
             </table>
         </div>
         {% else %}
-        <div class="div">
-            <div class="div--">
-                <h1>Active class: </h1>
+            {% if block_id != None %}
+            <div class="div">
+                <div class="div--">
+                    <h1>Active classes: </h1>
+                </div>
+                <div class="div-div">
+                    <h1>Lesson name</h1>
+                </div>
+                <div class="div-div">
+                    <h2>Enter code for lesson: </h2>
+                    <input id="code" type="text" class="code_form"></input>
+                </div>
+                <div class="div-div">
+                    <button id="block" onclick="send_value()" class="but" value="{{block_id}}">Attend Lesson</button>
+                </div>
             </div>
-            <div class="div-div">
-                <h2>Lesson name</h2>
+            {% else %}
+            <div>
+                You have no active classes. Please refresh!
             </div>
-            <div class="div-div">
-                <h3>Enter code: </h3>
-                <input id="code" type="text" class="code_form"></input>
-            </div>
-            <div class="div-div">
-                <button onclick="send_value()" class="but">Attend Lesson</button>
-            </div>
-        </div>
+            {% endif %}
         {%endif%}
     
     <style>
@@ -129,17 +135,19 @@
         function send_value(){
             console.log("press");
             var enter_code = document.getElementById('code').value;
+            var block_id = document.getElementById('block').value;
             console.log(JSON.stringify({'code': enter_code}));
             console.log(enter_code);
             $.ajax({
                 url: '/code_send/',
                 type: 'POST',
-                data: { json_data: JSON.stringify({code: enter_code})},
+                data: { json_data: JSON.stringify({code: enter_code, block: block_id})},
                 success: function(response) {
                     alert(response);
                 }
             });
         }
+
     </script>
 
 {% endblock content %}
