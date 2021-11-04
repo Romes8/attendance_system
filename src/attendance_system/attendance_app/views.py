@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import SESSION_KEY, login, logout
 import attendance_app.database as database
-from attendance_app.database import activate_block, check_active, check_entered_code, settings, get_role, get_courses, history, get_userID_name
+from attendance_app.database import deactivate_lesson, activate_block, check_active, check_entered_code, settings, get_role, get_courses, history, get_userID_name
 from attendance_app.models import DjangoSession, Login
 from datetime import datetime, timedelta
 import json
@@ -91,6 +91,7 @@ def history_page(request):
     if user is not None:
         if user.is_active:
             if sessionDict['role'] == 'student':
+                deactivate_lesson()
                 data = history(sessionDict['id'], 'date')
                 return render(request, "history.html", {"data": data, "sessionDict": sessionDict})
             else:
@@ -139,6 +140,17 @@ def active_session(request):
     else:
         return False                                #session disconnected
 
+def class_selected(request):
+    if user is not None:
+        if user.is_active:
+            print("redirected to class url")
+            return render(request, "class.html", {"sessionDict": sessionDict})
+
+    return redirect("/login/")
+          
+
+    
+
 def extend_session(request):
     print(request.POST)
     
@@ -154,6 +166,13 @@ def check_code(request):
         return HttpResponse("Valid Code!")
     return HttpResponse("Invalid Code!")
 
+@csrf_exempt
+def check_status(request):      #check for class status if we can be redirected to new page. 
+    data = json.loads(request.POST.get('json_data'))
+    code = data['is_active']
+    if check_entered_code(block_id,code):
+        return HttpResponse("Valid Code!")
+    return HttpResponse("Invalid Code!")
 
 import random
 import string

@@ -96,12 +96,13 @@ def activate_lesson(id, date, code):
     except:
         Exception
 
-def deactivate_lesson(id, date):
+def deactivate_lesson():
     try:
-        lesson = Blocks.objects.filter(teacher_course=id, date__contains=datetime.date(date.year, date.month, date.day))
+        lesson = Blocks.objects.filter(teacher_course=3, date__contains=datetime.date(2021, 10, 12))
         for block in lesson:
             block.is_active = False
             block.save(update_fields=["is_active"])
+            
     except:
         Exception
 

@@ -45,28 +45,9 @@
             </table>
         </div>
         {% else %}
-            {% if block_id == None %}
-            <div class="div">
-                <div class="div--">
-                    <h1>Active classes: </h1>
-                </div>
-                <br>
-                <div class="div-div">
-                    <h2>Lesson name</h2>
-                </div>
-                <div class="div-div">
-                    <h2>Enter code: </h2>
-                    <input id="code" type="text" class="code_form"></input>
-                </div>
-                <div class="div-div">
-                    <button id="block" onclick="send_value()" class="but" value="{{block_id}}">Attend Lesson</button>
-                </div>
-            </div>
-            {% else %}
             <div>
-                You have no active classes. Please refresh!
+                <h1>Display classes</h1>
             </div>
-            {% endif %}
         {%endif%}
     
     <style>
@@ -132,22 +113,6 @@
         }
         
         setInterval(time, 1000);
-
-        function send_value(){
-            console.log("press");
-            var enter_code = document.getElementById('code').value;
-            var block_id = document.getElementById('block').value;
-            console.log(JSON.stringify({'code': enter_code}));
-            console.log(enter_code);
-            $.ajax({
-                url: '/code_send/',
-                type: 'POST',
-                data: { json_data: JSON.stringify({code: enter_code, block: block_id})},
-                success: function(response) {
-                    alert(response);
-                }
-            });
-        }
 
     </script>
 

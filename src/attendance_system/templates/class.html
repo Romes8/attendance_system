@@ -1,0 +1,105 @@
+{% extends 'layout_base.html' %}
+{% load static %}
+
+{%block bootstrap%}
+    
+{%endblock bootstrap%}
+
+{%block username%}
+    {{sessionDict.username}}
+{%endblock username%}
+
+{%block role%}
+    {{sessionDict.role}}
+{%endblock role%}
+
+{% block content %}
+    <h1>Class here</h1>
+    <div class="div">
+        <div class="div--">
+            <h1>Active classes: </h1>
+        </div>
+        <br>
+        <div class="div-div">
+            <h2>Lesson name</h2>
+        </div>
+        <div class="div-div">
+            <h2>Enter code: </h2>
+            <input id="code" type="text" class="code_form"></input>
+        </div>
+        <div class="div-div">
+            <button id="block" onclick="send_value()" class="but" value="{{block_id}}">Attend Lesson</button>
+        </div>
+    </div>
+
+    <script>
+        function send_value(){
+            console.log("press");
+            var enter_code = document.getElementById('code').value;
+            var block_id = document.getElementById('block').value;
+            console.log(JSON.stringify({'code': enter_code}));
+            console.log(enter_code);
+            $.ajax({
+                url: '/code_send/',
+                type: 'POST',
+                data: { json_data: JSON.stringify({code: enter_code, block: block_id})},
+                success: function(response) {
+                    alert(response);
+                }
+            });
+        }
+
+        setInterval(time, 1000);
+
+    </script>
+
+    <style>
+        .div {
+            width: 90%;
+            height: 40%;
+            margin: 5%;
+        }
+
+        .div-div {
+            width: 33%;
+            height: 100px;
+            float: left;
+        }
+
+        .div-- {
+            width: 90%;
+            height: 100px;
+            float: center;
+        }
+
+        .nav_text{
+            font-size: 19px;
+        }
+    
+        .big_text{
+            font-size: xx-large;
+        }
+
+        .but{
+            background-color:#44c767;
+            border-radius:10px;
+            border:3px solid #18ab29;
+            display:inline-block;
+            cursor:pointer;
+            color:#ffffff;
+            font-size:19px;
+            padding:20px 49px;
+        }
+
+        .code_form{
+            border: 2px solid #233249;
+            border-radius: 4px;
+        }
+
+        .code_form:focus{
+            border: 3px solid #555;
+        }
+
+    </style>
+
+{%endblock content %}
