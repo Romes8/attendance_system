@@ -28,5 +28,6 @@ urlpatterns = [
     path('settings/', settings_page, name='settings'),
     path('code_send/', check_code),
     path('notification/', extend_session, name='extend session'),
-    path('block/<int:teacher_course>/', active_class, name='activate class')
+    path('block/<int:teacher_course>/', active_class, name='activate class'),
+    path('class/<str:lesson_name>/')
 ]
