@@ -29,5 +29,5 @@ urlpatterns = [
     path('code_send/', check_code),
     path('notification/', extend_session, name='extend session'),
     path('block/<int:teacher_course>/', active_class, name='activate class'),
-    path('class/', class_selected, name="class selected")
+    path('class/<int:class_course>/', class_selected, name="class selected")
 ]
