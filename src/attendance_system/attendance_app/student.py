@@ -1,5 +1,8 @@
+from typing import AsyncContextManager
+
+from django.http.response import HttpResponse
 from attendance_app.models import Attendance, StudentClass, ClassCourses, TeacherCourse, Blocks
-from datetime import datetime
+import datetime
 
 from attendance_app.teacher import activate_block
 
@@ -38,7 +41,8 @@ def check_active(id, date):
         active_blocks = [] 
         teacher_course_id = TeacherCourse.objects.get(course_class=id).id
         print(teacher_course_id)
-        blocks = Blocks.objects.filter(teacher_course=teacher_course_id, date__contains=datetime.date(2021, 10, 12))
+        blocks = Blocks.objects.filter(teacher_course=3, date__contains=datetime.date(2021, 10, 12))
+        print(blocks)
         for block in blocks:
             if block.is_active:
                 active_blocks.append(block.id)
@@ -46,11 +50,25 @@ def check_active(id, date):
     except:
         Exception
 
-def check_entered_code(block_id,code):
+def check_entered_code(blocks,code):
     try:
-        valid_code = Blocks.objects.get(id=block_id).code
+        print(blocks)
+        for block in blocks:
+            print(block)
+        valid_code = Blocks.objects.get(id=blocks[0]).code
         if code == valid_code:
             return True
         return False
+    except:
+        Exception
+
+
+def check_as_present(student_id, blocks):
+    try:
+        for block in blocks:
+            if Attendance.objects.filter(student_id=student_id, block_id=block).exists():
+                return False
+            Attendance.objects.create(student_id=student_id, block_id=block, status="present")
+            return True
     except:
         Exception

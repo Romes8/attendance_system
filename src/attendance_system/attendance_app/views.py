@@ -143,9 +143,14 @@ def active_session(request):
 
 def class_selected(request, class_course):
     if user is not None:
-        if user.is_active:
+        if user.is_active: 
+            type = None
             active_blocks = student.check_active(class_course, datetime.now())
-            return render(request, "class.html", {"sessionDict": sessionDict, "active_blocks": active_blocks})
+            if len(active_blocks) == 1:
+                type = "block"
+            elif len(active_blocks) > 1:
+                type = "lesson"
+            return render(request, "class.html", {"sessionDict": sessionDict, "active_blocks": active_blocks, "type": type})
 
     return redirect("/login/")
           
@@ -159,19 +164,17 @@ def extend_session(request):
 @csrf_exempt
 def check_code(request):
     data = json.loads(request.POST.get('json_data'))
+    print(data)
     code = data['code']
-    block_id = data['block_id']
-    if student.check_entered_code(block_id,code):
-        return HttpResponse("Valid Code!")
-    return HttpResponse("Invalid Code!")
-
-@csrf_exempt
-def check_status(request):      #check for class status if we can be redirected to new page. 
-    data = json.loads(request.POST.get('json_data'))
-    code = data['is_active']
-    if check_entered_code(block_id,code):
-        return HttpResponse("Valid Code!")
-    return HttpResponse("Invalid Code!")
+    blocks = data['blocks']
+    student_id = data['student_id']
+    if student.check_entered_code(blocks,code):
+        if student.check_as_present(student_id, blocks):
+            return HttpResponse("Valid code! You are registered as present.")
+        else:
+            return HttpResponse("You already checked in as present.")
+    return HttpResponse("Invalid code! Please try again.")
+        
 
 import random
 import string

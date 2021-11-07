@@ -18,24 +18,27 @@
         <h1>{{ sessionDict.name }}</h1>
         <h1><span id="cur_time"></span></h1>
     </div>
-
-   
-    <div class="board">
+    {% if type %}
+    <h2 style="text-align: center;">You have one active {{type}}</h2>
+        <div class="board">
         <div class="box">
           <h1>
           Enter code:
           </h1>
+          <input type="hidden" id="student" value="{{sessionDict.id}}">
         </div>
         <div class="box">
             <input id="code" type="text" class="code_form"></input>
         </div>
         <div class="box">
-            <button class="button">
+            <button id="block" class="button" onclick="send_value()">
                 Attend lesson
             </button>
-        </div>
+        </div>       
     </div>
-   
+    {% else %}
+    <h2 style="text-align: center;">You don't have any active blocks for this course</h2>
+    {% endif %}   
 
     <style>
         .board {
@@ -144,13 +147,15 @@
         function send_value(){
             console.log("press");
             var enter_code = document.getElementById('code').value;
-            var block_id = document.getElementById('block').value;
+            var blocks = JSON.parse('{{active_blocks|safe}}');
+            var student_id = document.getElementById('student').value;
             console.log(JSON.stringify({'code': enter_code}));
             console.log(enter_code);
+            console.log(student_id);
             $.ajax({
                 url: '/code_send/',
                 type: 'POST',
-                data: { json_data: JSON.stringify({code: enter_code, block: block_id})},
+                data: { json_data: JSON.stringify({student_id: student_id, code: enter_code, blocks: blocks})},
                 success: function(response) {
                     alert(response);
                 }
