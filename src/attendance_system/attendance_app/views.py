@@ -1,7 +1,7 @@
 from django.http.response import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, request
-from django.shortcuts import redirect
+from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import SESSION_KEY, login, logout
 import attendance_app.database as database
@@ -191,3 +191,12 @@ def random_string():
 
 if "Vartic2" in subprocess.check_output(['netsh', 'wlan', 'show', 'interfaces']).decode('utf-8'):
     print('good network')
+    
+def page_404(request, *args, **argv):
+    response = render(request,'404.html')
+    response.status_code = 404
+    return response
+
+
+def page_500(request):
+    return render(request,'500.html')

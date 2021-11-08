@@ -1,0 +1,38 @@
+{% extends 'layout_base.html' %}
+{% load static %}
+
+{%block bootstrap%}
+    
+{%endblock bootstrap%}
+
+{%block username%}
+    {{sessionDict.username}}
+{%endblock username%}
+
+{%block role%}
+    {{sessionDict.role}}
+{%endblock role%}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="error-template">
+                <h1>
+                    Oops!</h1>
+                <h2>
+                    500 Server error</h2>
+                <div class="error-details">
+                    Sorry, an error has occured, Requested page not found!
+                </div>
+                <div class="error-actions">
+                    <a href="/index/" class="btn btn-primary btn-lg">
+                        Take Me Home </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+
+{%endblock content %}
