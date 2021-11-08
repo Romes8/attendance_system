@@ -14,23 +14,26 @@
 {%endblock role%}
 
 {% block content %}
+    <br></br>
     <div class = "container-fluid" style="text-align: center;">
-        <h1>{{ sessionDict.name }}</h1>
+        <h1>{{ subject_name }}</h1>
         <h1><span id="cur_time"></span></h1>
     </div>
-    <h1>Students</h1>
+    <br></br>
     <div class="table-size">
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope = "col">Name</th>
+                    <th scope = "col">First name</th>
+                    <th scope = "col">Last name</th>
                     <th scope = "col" class="right">See attendance details</th>
                 </tr>
             </thead>
             {% for student in students %}
             <tr>
-                <th>{{ student }}</th>
-                <th class="right"><a href="/student/{{row.class_id}}/" class="btn btn-primary">Open</a></th>
+                <th>{{ student.firstname }}</th>
+                <th>{{ student.lastname }}</th>
+                <th class="right"><a href="/student/{{student.id}}/" class="btn btn-primary">Open</a></th>
             </tr>
             {% endfor %}
         </table>

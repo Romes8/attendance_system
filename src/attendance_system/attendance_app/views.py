@@ -156,11 +156,17 @@ def class_selected(request, class_course):
     return redirect("/login/")
           
 def details_page(request, class_id):
+     
     if user is not None:
         if user.is_active: 
             print("Details page")
             students = teacher.get_students(class_id)
-            return render(request, "details.html", {"sessionDict": sessionDict, "students": students})
+            data = teacher.get_courses(sessionDict['id'])
+            for dat in data:
+                if dat['class_id'] == class_id:
+                    subject_name = dat['subject']
+                    
+            return render(request, "details.html", {"sessionDict": sessionDict, "students": students, "subject_name":subject_name})
     return redirect("/login/")
             
                

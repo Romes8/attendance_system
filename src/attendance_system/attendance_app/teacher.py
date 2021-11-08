@@ -41,7 +41,7 @@ def create_event_block(block_id, teacher_id):
         timer = int(Settings.objects.get(teacher=teacher_id).checkInPeriod)
         print(timer)
         cur = connecton.cursor()
-        cur.execute = ("CREATE EVENT deactivate_block1 ON SCHEDULE AT '2021-11-08 15:40:00' + INTERVAL 15 MINUTE ON COMPLETION PRESERVE DO UPDATE blocks SET is_active = 0 WHERE id = 1 ")
+        cur.execute = ("CREATE EVENT deactivate_block1 ON SCHEDULE AT '2021-11-08 15:40:00' + INTERVAL 15 MINUTE ON COMPLETION PRESERVE DO UPDATE blocks SET is_active = 0 WHERE id = 1;")
         cur.close()
         return 0
     except:
@@ -93,7 +93,11 @@ def get_students(class_id):
         students = []
         query = StudentClass.objects.filter(class_field=class_id)
         for result in query:
-            students.append(result.student.firstname + ' ' + result.student.lastname)
+            students.append({
+                "firstname": result.student.firstname,
+                "lastname": result.student.lastname,
+                "id": result.student.id})
+            
         return students
     except:
         Exception
