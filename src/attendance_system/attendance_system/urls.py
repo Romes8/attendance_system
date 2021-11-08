@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from attendance_app.views import page_500,page_404, check_code, active_class, extend_session, home_page, index_page, login_page, history_page, logout_page, settings_page, class_selected
+from attendance_app.views import details_page,page_500,page_404, check_code, active_class, extend_session, home_page, index_page, login_page, history_page, logout_page, settings_page, class_selected
 
 handler404 = "attendance_app.views.page_404"
 handler500 = "attendance_app.views.page_500"
@@ -31,5 +31,7 @@ urlpatterns = [
     path('code_send/', check_code),
     path('notification/', extend_session, name='extend session'),
     path('block/<int:teacher_course>/', active_class, name='activate class'),
-    path('class/<int:class_course>/', class_selected, name="class selected")
+    path('class/<int:class_course>/', class_selected, name="class selected"),
+    path('details/<int:class_id>/', details_page, name='details_page')
+
 ]

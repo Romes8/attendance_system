@@ -10,6 +10,7 @@ import attendance_app.teacher as teacher
 from attendance_app.models import DjangoSession, Login
 from datetime import datetime, timedelta
 import json
+start_time = datetime.now()
 sessionDict = {}
 user = None
 wrongLogin = 'false' #variable for error diplay message while logging in 
@@ -116,14 +117,14 @@ def active_class(request, teacher_course):
     if user is not None:
         if user.is_active:
             if sessionDict['role'] == 'teacher':
+                global start_time
                 curDate = datetime.now()
                 code = random_string()
-                teacher.activate_block(teacher_course, curDate, code)
-                return render(request, "active_page.html", {'code':code})
+                block_id = teacher.activate_block(teacher_course, curDate, code)
+                teacher.create_event_block(block_id, sessionDict['id'])
+                return render(request, "active_page.html", {'code':code, "sessionDict": sessionDict})
             return redirect('/index/')
     return redirect('/login/')
-
-
 
 def active_session(request):
     session_key = request.session.session_key
@@ -154,10 +155,22 @@ def class_selected(request, class_course):
 
     return redirect("/login/")
           
+def details_page(request, class_id):
+    if user is not None:
+        if user.is_active: 
+            print("Details page")
+            students = teacher.get_students(class_id)
+            return render(request, "details.html", {"sessionDict": sessionDict, "students": students})
+    return redirect("/login/")
+            
+               
+                
+    return redirect("/login/")
+
+                
 
 def extend_session(request):
     print(request.POST)
-    
     return True
 
 
@@ -191,12 +204,13 @@ def random_string():
 
 if "Vartic2" in subprocess.check_output(['netsh', 'wlan', 'show', 'interfaces']).decode('utf-8'):
     print('good network')
+
     
 def page_404(request, *args, **argv):
-    response = render(request,'404.html')
+    response = render(request,'404.html', {"sessionDict": sessionDict})
     response.status_code = 404
     return response
 
 
 def page_500(request):
-    return render(request,'500.html')
+    return render(request,'500.html', {"sessionDict": sessionDict})

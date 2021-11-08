@@ -1,0 +1,53 @@
+{% extends 'layout_base.html' %}
+{% load static %}
+
+{%block bootstrap%}
+    
+{%endblock bootstrap%}
+
+{%block username%}
+    {{sessionDict.username}}
+{%endblock username%}
+
+{%block role%}
+    {{sessionDict.role}}
+{%endblock role%}
+
+{% block content %}
+    <div class = "container-fluid" style="text-align: center;">
+        <h1>{{ sessionDict.name }}</h1>
+        <h1><span id="cur_time"></span></h1>
+    </div>
+    <h1>Students</h1>
+    <div class="table-size">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope = "col">Name</th>
+                    <th scope = "col" class="right">See attendance details</th>
+                </tr>
+            </thead>
+            {% for student in students %}
+            <tr>
+                <th>{{ student }}</th>
+                <th class="right"><a href="/student/{{row.class_id}}/" class="btn btn-primary">Open</a></th>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<style>
+    .table-size{
+        width: 65%;
+        margin: auto;
+    }
+
+    .right{
+        text-align: right;
+        padding: 20px;
+    }
+</style>
+
+
+{%endblock content %}

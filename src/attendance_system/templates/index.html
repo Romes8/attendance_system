@@ -29,14 +29,16 @@
                         <th scope = "col">Class</th>
                         <th scope = "col">Subject name</th>
                         <th scope = "col">Room</th>
+                        <th scope = "col">Details</th>
                         <th scope = "col">Open</th>
                     </tr>
                 </thead>
                 {% for row in data %}
                 <tr>
-                    <th scope="row">{{ row.class }}</th>
+                    <th scope="row">{{ row.class_name }}</th>
                     <td>{{ row.subject }}</td>
                     <td>{{ row.room }}</td>
+                    <td><a href="/details/{{row.class_id}}/" class="btn btn-primary">Details</a></td>
                     <td><a href="/block/{{row.id}}/" class="btn btn-primary">Open class</a></td>
                 </tr>
                 {% endfor %}

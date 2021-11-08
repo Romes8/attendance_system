@@ -55,9 +55,7 @@
 				<ul class="nav menu dropdown mod-list">
                     {% if sessionDict.role == "student" %}
                         <li><a href="/history/" class="nav_text">History</a></li>
-					{% else %}
-					
-                    <li><a href="/classes/" class="nav_text">Classes</a></li>
+					{% elif sessionDict.role == "teacher" %}
 					<li><a href="/settings/" class="nav_text">Settings</a></li>
 					{% endif %}
 				</ul> 
