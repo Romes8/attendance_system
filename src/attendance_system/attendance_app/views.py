@@ -10,7 +10,7 @@ import attendance_app.teacher as teacher
 from attendance_app.models import DjangoSession, Login
 from datetime import datetime, timedelta
 import json
-start_time = datetime.now()
+import threading
 sessionDict = {}
 user = None
 wrongLogin = 'false' #variable for error diplay message while logging in 
@@ -106,8 +106,6 @@ def settings_page(request):
         if user.is_active:
             if sessionDict['role'] == 'teacher':
                 data = teacher.settings(sessionDict['id'])
-                print(data)
-                print(sessionDict)
                 return render(request, "settings.html", {'sessionDict': sessionDict, 'data': data})
             else:
                 return redirect('/index/')
@@ -122,9 +120,13 @@ def active_class(request, teacher_course):
                 code = random_string()
                 block_id = teacher.activate_block(teacher_course, curDate, code)
                 teacher.create_event_block(block_id, sessionDict['id'])
+                threading.Timer(900, teacher.deactivate_block, [teacher_course, curDate]).start()
                 return render(request, "active_page.html", {'code':code, "sessionDict": sessionDict})
             return redirect('/index/')
     return redirect('/login/')
+
+def hello(smth):
+    print(smth)
 
 def active_session(request):
     session_key = request.session.session_key

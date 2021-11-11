@@ -1,6 +1,7 @@
 from attendance_app.models import TeacherCourse, Blocks, Settings, StudentClass
 from datetime import datetime
 from django.db import connection
+import schedule
 
 def get_courses(id):
     try:
@@ -38,10 +39,10 @@ def create_event_block(block_id, teacher_id):
     try:
         start_time = Blocks.objects.get(id=1).date
         print(start_time)
-        timer = int(Settings.objects.get(teacher=teacher_id).checkInPeriod)
-        print(timer)
-        cur = connecton.cursor()
-        cur.execute = ("CREATE EVENT deactivate_block1 ON SCHEDULE AT '2021-11-08 15:40:00' + INTERVAL 15 MINUTE ON COMPLETION PRESERVE DO UPDATE blocks SET is_active = 0 WHERE id = 1;")
+        cur = connection.cursor()
+        print("sql")
+        cur.execute = ("DROP EVENT deactivate_block1")
+        print("hello")
         cur.close()
         return 0
     except:
@@ -64,14 +65,14 @@ def deactivate_lesson():
         for block in lesson:
             block.is_active = False
             block.save(update_fields=["is_active"])
-            
+            print()
+        return schedule.CancelJob
     except:
         Exception
 
 def activate_block(id, date, code):
     try:
         block = Blocks.objects.get(teacher_course=id, date__contains=datetime.date(2021, 10, 12), date__hour=8)
-        print(blocks)
         block.code = code
         block.is_active = True
         block.save(update_fields=["is_active","code"])
@@ -84,6 +85,7 @@ def deactivate_block(id, dateTime):
         block = Blocks.objects.get(teacher_course=id, date=datetime.date(dateTime))
         block.is_active = False
         block.save(update_fields=["is_active"])
+
     except:
         Exception
         
