@@ -125,9 +125,6 @@ def active_class(request, teacher_course):
             return redirect('/index/')
     return redirect('/login/')
 
-def hello(smth):
-    print(smth)
-
 def active_session(request):
     session_key = request.session.session_key
     if request.session.exists(session_key):
@@ -157,7 +154,7 @@ def class_selected(request, class_course):
 
     return redirect("/login/")
           
-def details_page(request, class_id):
+def details_page(request, teacher_course, class_id):
      
     if user is not None:
         if user.is_active: 
@@ -168,14 +165,18 @@ def details_page(request, class_id):
                 if dat['class_id'] == class_id:
                     subject_name = dat['subject']
                     
-            return render(request, "details.html", {"sessionDict": sessionDict, "students": students, "subject_name":subject_name})
-    return redirect("/login/")
+            return render(request, "details.html", {"sessionDict": sessionDict, "students": students, "teacher_course":teacher_course, "subject_name":subject_name})
+        return redirect("/login/")
             
-               
-                
     return redirect("/login/")
 
-                
+def student_details(request):
+    json_data = json.loads(request.POST.get('json_data'))
+    student_id = json_data['student_id']
+    teacher_course = json_data['teacher_course']
+    course = json_data['course']
+    data = teacher.get_student(teacher_course, student_id)
+    return render(request, "student.html", {"course":course, "data":data})
 
 def extend_session(request):
     print(request.POST)

@@ -1,7 +1,7 @@
-from attendance_app.models import TeacherCourse, Blocks, Settings, StudentClass
+from attendance_app.models import Attendance, TeacherCourse, Blocks, Settings, StudentClass
 from datetime import datetime
 from django.db import connection
-import schedule
+
 
 def get_courses(id):
     try:
@@ -65,14 +65,12 @@ def deactivate_lesson():
         for block in lesson:
             block.is_active = False
             block.save(update_fields=["is_active"])
-            print()
-        return schedule.CancelJob
     except:
         Exception
 
-def activate_block(id, date, code):
+def activate_block(id, dateTime, code):
     try:
-        block = Blocks.objects.get(teacher_course=id, date__contains=datetime.date(2021, 10, 12), date__hour=8)
+        block = Blocks.objects.get(teacher_course=id, date__contains=datetime.date(dateTime.year, dateTime.month, dateTime.day), date__hour=dateTime.hour)
         block.code = code
         block.is_active = True
         block.save(update_fields=["is_active","code"])
@@ -82,10 +80,9 @@ def activate_block(id, date, code):
 
 def deactivate_block(id, dateTime):
     try:
-        block = Blocks.objects.get(teacher_course=id, date=datetime.date(dateTime))
+        block = Blocks.objects.get(teacher_course=id, date_contains=datetime.date(dateTime.year, dateTime.month, dateTime.day), date__hour=datetime.hour)
         block.is_active = False
         block.save(update_fields=["is_active"])
-
     except:
         Exception
         
@@ -104,3 +101,16 @@ def get_students(class_id):
     except:
         Exception
         print("exeption")
+
+def get_student_attendance(teacher_course, student_id):
+    try:
+        attendance = []
+        blocks = Blocks.objects.filter(teacher_course=teacher_course)
+        for block in blocks:
+            record = Attendance.objects.get(student=student_id, block=block)
+            attendance.append({
+                "date": record.date,
+                "status": record.status
+            })
+    except:
+        Exception

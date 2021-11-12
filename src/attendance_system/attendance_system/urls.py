@@ -32,6 +32,6 @@ urlpatterns = [
     path('notification/', extend_session, name='extend session'),
     path('block/<int:teacher_course>/', active_class, name='activate class'),
     path('class/<int:class_course>/', class_selected, name="class selected"),
-    path('details/<int:class_id>/', details_page, name='details_page')
+    path('details/<int:teacher_course>/<int:class_id>/', details_page, name='details_page')
 
 ]

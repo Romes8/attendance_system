@@ -38,7 +38,7 @@
                     <th scope="row">{{ row.class_name }}</th>
                     <td>{{ row.subject }}</td>
                     <td>{{ row.room }}</td>
-                    <td><a href="/details/{{row.class_id}}/" class="btn btn-primary">Details</a></td>
+                    <td><a href="/details/{{row.id}}/{{row.class_id}}/" class="btn btn-primary">Details</a></td>
                     <td><a href="/block/{{row.id}}/" class="btn btn-primary">Open class</a></td>
                 </tr>
                 {% endfor %}
