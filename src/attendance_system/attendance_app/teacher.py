@@ -1,4 +1,4 @@
-from attendance_app.models import Attendance, TeacherCourse, Blocks, Settings, StudentClass
+from attendance_app.models import Attendance, Courses, Students, TeacherCourse, Blocks, Settings, StudentClass
 from datetime import datetime
 from django.db import connection
 
@@ -105,12 +105,19 @@ def get_students(class_id):
 def get_student_attendance(teacher_course, student_id):
     try:
         attendance = []
+        print("hello")
+        student = Students.objects.get(id=student_id)
+        course = TeacherCourse.objects.get(id=teacher_course).course_class.course.subject
+        name = student.lastname + ' ' + student.firstname
         blocks = Blocks.objects.filter(teacher_course=teacher_course)
         for block in blocks:
+            print(block)
             record = Attendance.objects.get(student=student_id, block=block)
+            print(record)
             attendance.append({
-                "date": record.date,
+                "date": block.date,
                 "status": record.status
             })
+        return attendance, name, course
     except:
-        Exception
+        return [], name, course

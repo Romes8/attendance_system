@@ -1,5 +1,3 @@
-from typing import AsyncContextManager
-
 from django.http.response import HttpResponse
 from attendance_app.models import Attendance, StudentClass, ClassCourses, TeacherCourse, Blocks
 import datetime

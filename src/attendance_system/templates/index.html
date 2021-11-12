@@ -22,6 +22,8 @@
         {% if request.session.role == "teacher" %} 
         <br>
         </br>
+        <button onclick="getLocation()">GPS</button>
+        <p id="demo"></p>
         <div class = "container-md">
             <table class="table table-striped">
                 <thead>
@@ -189,6 +191,20 @@
         }
         
         setInterval(time, 1000);
+
+        var x = document.getElementById("demo")
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            x.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude; 
+        }
+
 
     </script>
 

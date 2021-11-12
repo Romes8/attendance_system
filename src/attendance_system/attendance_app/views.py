@@ -15,7 +15,7 @@ import json
 import threading
 import subprocess
 
-    
+# Authenticate and login the user     
 def login_page(request):
         
     if request.method == 'GET':
@@ -40,6 +40,7 @@ def login_page(request):
     
     return render(request, "login.html") 
 
+# Logs out the user, ending the session
 def logout_page(request):
     try:
         logout(request)
@@ -47,11 +48,16 @@ def logout_page(request):
         pass
     return redirect("/login/", {})
 
+#
 @login_required
 def home_page(request):
 
     return render(request, "layout_base.html")
 
+
+# Index page:
+# students - courses they attend
+# tecahers - classes + courses they teach
 @login_required
 def index_page(request):
     student.get_courses(request.session.get('id'))
@@ -61,6 +67,8 @@ def index_page(request):
         data = student.get_courses(request.session.get('id'))
     return render(request, "index.html", {'data': data})
 
+
+# Attendance history of the student
 @login_required
 def history_page(request):
 
@@ -71,6 +79,7 @@ def history_page(request):
         return redirect('/index/')
 
 
+# Settings page for teachers
 @login_required
 def settings_page(request):
     if request.session.get('role') == 'teacher':
@@ -80,6 +89,7 @@ def settings_page(request):
         return redirect('/index/')
 
 
+# Page that displays the code and activates the block
 @login_required
 def active_class(request, teacher_course):
 
@@ -94,6 +104,7 @@ def active_class(request, teacher_course):
     return redirect('/index/')
 
 
+# Checks if the block is active and redirects to the page to enter the code
 @login_required
 def class_selected(request, class_course):
     type = None
@@ -105,6 +116,7 @@ def class_selected(request, class_course):
     return render(request, "class.html", {"active_blocks": active_blocks, "type": type})
 
 
+#
 @login_required          
 def details_page(request, teacher_course, class_id):
     print("Details page")
@@ -117,13 +129,9 @@ def details_page(request, teacher_course, class_id):
     return render(request, "details.html", {"students": students, "teacher_course":teacher_course, "subject_name":subject_name})
 
 @login_required
-def student_details(request):
-    json_data = json.loads(request.POST.get('json_data'))
-    student_id = json_data['student_id']
-    teacher_course = json_data['teacher_course']
-    course = json_data['course']
-    data = teacher.get_student(teacher_course, student_id)
-    return render(request, "student.html", {"course":course, "data":data})
+def student_details(request, teacher_course, student_id):
+    data, name, course = teacher.get_student_attendance(teacher_course, student_id)
+    return render(request, "student.html", {"data":data, "name":name, "course":course})
 
 @login_required
 def extend_session(request):

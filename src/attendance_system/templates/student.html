@@ -1,0 +1,42 @@
+{% extends 'layout_base.html' %}
+{% load static %}
+
+{%block bootstrap%}
+    
+{%endblock bootstrap%}
+
+{%block username%}
+    {{request.session.username}}
+{%endblock username%}
+
+{%block role%}
+    {{request.session.role}}
+{%endblock role%}
+
+{% block content %}
+<br></br>
+<div class = "container-fluid" style="text-align: center;">
+    <h2> {{ course }}</h2>
+    <h4 >{{ name }}</h4>
+</div>
+<br></br>
+<div class="table-size">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope = "col">Date</th>
+                <th scope = "col">Status</th>
+            </tr>
+        </thead>
+        {% for record in data %}
+        <tr>
+            <th>{{ record.date}}</th>
+            <th>{{ record.status }}</th>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</div>
+
+
+{%endblock content %}
