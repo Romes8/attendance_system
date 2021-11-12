@@ -6,11 +6,11 @@
 {%endblock bootstrap%}
 
 {%block username%}
-    {{sessionDict.username}}
+    {{request.session.username}}
 {%endblock username%}
 
 {%block role%}
-    {{sessionDict.role}}
+    {{request.session.role}}
 {%endblock role%}
 
 {% block content %}
@@ -51,6 +51,22 @@
         padding: 20px;
     }
 </style>
+
+<script>
+    function get_student(){
+        var student_id = JSON.parse('{{student.id|safe}}');
+        var teacher_course = JSON.parse('{{teacher_course|safe}}');
+        var course = JSON.parse('{{subject_name|safe}}')
+        $.ajax({
+                url: '/student/',
+                type: 'POST',
+                data: { json_data: JSON.stringify({student_id: student_id, teacher_course: teacher_course, course: course})},
+                success: function(response) {
+                    alert(response);
+                }
+            });
+    }
+</script>
 
 
 {%endblock content %}

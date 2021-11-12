@@ -2,174 +2,121 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, request
 from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import SESSION_KEY, login, logout
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 import attendance_app.database as database
 import attendance_app.student as student
 import attendance_app.teacher as teacher
-from attendance_app.models import DjangoSession, Login
+from attendance_app.models import DjangoSession, Login, MyUser, Roles
 from datetime import datetime, timedelta
 import json
 import threading
-sessionDict = {}
-user = None
-wrongLogin = 'false' #variable for error diplay message while logging in 
-
 import subprocess
 
     
 def login_page(request):
-    global wrongLogin
-    global sessionDict
-    global user
         
     if request.method == 'GET':
         print("Get method activated")
 
     if request.method == 'POST':
-        wrongLogin = 'false'  #set login check back to deafault
         print("POST on index")
         username = request.POST.get('username')
         password = request.POST.get('password')
-        backend = database.MyBackend()
-        user = backend.authenticate(username=username, password=password)
-        print(user)
-        if user is not None:
+        user = authenticate(username=username, password=password)
+        if user:
             login(request, user=user)
-            request.session.set_expiry(20)
-            request.session['alert'] = True
-
-            if request.session.exists(session_key=request.session.session_key):
-                print(request.session.session_key)
-            sessionDict['username'] = user.username
-            sessionDict['role'] = user.role.name
-            sessionDict['id'], sessionDict['name'] = database.get_userID_name(sessionDict['role'], sessionDict['username'])
-            print(sessionDict)
-            user.is_active=1
-            user.save(update_fields=["is_active"])
-            return redirect('/index/')
+            request.session.set_expiry(300)
+            request.session['username'] = username
+            request.session['role'] = user.role.name
+            request.session['id'], request.session['name'] = database.get_userID_name(user.role.name, username)
+            print("yes")
+            return redirect ('/index/')
         else:
-            wrongLogin = 'true'
-            return redirect('/login/')
-    # refers to index page and what contect is going to be displayed  when post method is applied
+            messages.error(request,'username or password not correct')
+            return redirect('login')
     
-    return render(request, "login.html", {'wrongLogin': wrongLogin}) #sending message for wrong login`
+    return render(request, "login.html") 
 
 def logout_page(request):
-    global user
     try:
         logout(request)
-        user.is_active=0
-        user.save(update_fields=["is_active"])
-        sessionDict.clear()
-        user=None
     except KeyError:
         pass
     return redirect("/login/", {})
 
-# Create your views here.
+@login_required
 def home_page(request):
-    if user is not None:
-        if user.is_active:
-            return render(request, "layout_base.html")
-    
-    return redirect('/login/')
 
+    return render(request, "layout_base.html")
 
+@login_required
 def index_page(request):
-    global wrongLogin
-    if user is not None:
-        if user.is_active:
-            student.get_courses(sessionDict['id'])
-            if sessionDict['role'] == 'teacher':
-                data = teacher.get_courses(sessionDict['id'])
-                return render(request, "index.html", {'sessionDict': sessionDict, 'data': data})
-            else:
-                data = student.get_courses(sessionDict['id'])
-                return render(request, "index.html", {'sessionDict': sessionDict, 'data': data})
+    student.get_courses(request.session.get('id'))
+    if request.session.get('role') == 'teacher':
+        data = teacher.get_courses(request.session.get('id'))
     else:
-        return redirect('/login/')
+        data = student.get_courses(request.session.get('id'))
+    return render(request, "index.html", {'data': data})
 
+@login_required
 def history_page(request):
-    if user is not None:
-        if user.is_active:
-            if sessionDict['role'] == 'student':
-                data = student.history(sessionDict['id'], 'date')
-                return render(request, "history.html", {"data": data, "sessionDict": sessionDict})
-            else:
-                redirect('/index/')
-    else:
-        return redirect('/login/')
 
+    if request.session.get('role') == 'student':
+        data = student.history(request.session.get('id'), 'date')
+        return render(request, "history.html", {"data": data})
+    else:
+        return redirect('/index/')
+
+
+@login_required
 def settings_page(request):
-    if user is not None:
-        if user.is_active:
-            if sessionDict['role'] == 'teacher':
-                data = teacher.settings(sessionDict['id'])
-                return render(request, "settings.html", {'sessionDict': sessionDict, 'data': data})
-            else:
-                return redirect('/index/')
-    return redirect('/login/')
-
-def active_class(request, teacher_course):
-    if user is not None:
-        if user.is_active:
-            if sessionDict['role'] == 'teacher':
-                global start_time
-                curDate = datetime.now()
-                code = random_string()
-                block_id = teacher.activate_block(teacher_course, curDate, code)
-                teacher.create_event_block(block_id, sessionDict['id'])
-                threading.Timer(900, teacher.deactivate_block, [teacher_course, curDate]).start()
-                return render(request, "active_page.html", {'code':code, "sessionDict": sessionDict})
-            return redirect('/index/')
-    return redirect('/login/')
-
-def active_session(request):
-    session_key = request.session.session_key
-    if request.session.exists(session_key):
-        record = DjangoSession.objects.get(session_key=session_key)
-        if record.expire_date < datetime.now():
-            if extend_session():
-                request.session['alert'] = True
-                record.expire_date = datetime.now() + timedelta(minutes=20)
-                return True                         #session extended 
-            else:
-                record.delete()
-                return False                        #session disconnected
-        return True                                 #session still active             
+    if request.session.get('role') == 'teacher':
+        data = teacher.settings(request.session.get('id'))
+        return render(request, "settings.html", {'data': data})
     else:
-        return False                                #session disconnected
+        return redirect('/index/')
 
+
+@login_required
+def active_class(request, teacher_course):
+
+    if request.session.get('role') == 'teacher':
+        global start_time
+        curDate = datetime.now()
+        code = random_string()
+        block_id = teacher.activate_block(teacher_course, curDate, code)
+        teacher.create_event_block(block_id, request.session.get('id'))
+        threading.Timer(900, teacher.deactivate_block, [teacher_course, curDate]).start()
+        return render(request, "active_page.html", {'code':code})
+    return redirect('/index/')
+
+
+@login_required
 def class_selected(request, class_course):
-    if user is not None:
-        if user.is_active: 
-            type = None
-            active_blocks = student.check_active(class_course, datetime.now())
-            if len(active_blocks) == 1:
-                type = "block"
-            elif len(active_blocks) > 1:
-                type = "lesson"
-            return render(request, "class.html", {"sessionDict": sessionDict, "active_blocks": active_blocks, "type": type})
+    type = None
+    active_blocks = student.check_active(class_course, datetime.now())
+    if len(active_blocks) == 1:
+        type = "block"
+    elif len(active_blocks) > 1:
+        type = "lesson"
+    return render(request, "class.html", {"active_blocks": active_blocks, "type": type})
 
-    return redirect("/login/")
-          
+
+@login_required          
 def details_page(request, teacher_course, class_id):
-     
-    if user is not None:
-        if user.is_active: 
-            print("Details page")
-            students = teacher.get_students(class_id)
-            data = teacher.get_courses(sessionDict['id'])
-            for dat in data:
-                if dat['class_id'] == class_id:
-                    subject_name = dat['subject']
-                    
-            return render(request, "details.html", {"sessionDict": sessionDict, "students": students, "teacher_course":teacher_course, "subject_name":subject_name})
-        return redirect("/login/")
+    print("Details page")
+    students = teacher.get_students(class_id)
+    data = teacher.get_courses(request.session.get('id'))
+    for dat in data:
+        if dat['class_id'] == class_id:
+            subject_name = dat['subject']
             
-    return redirect("/login/")
+    return render(request, "details.html", {"students": students, "teacher_course":teacher_course, "subject_name":subject_name})
 
+@login_required
 def student_details(request):
     json_data = json.loads(request.POST.get('json_data'))
     student_id = json_data['student_id']
@@ -178,6 +125,7 @@ def student_details(request):
     data = teacher.get_student(teacher_course, student_id)
     return render(request, "student.html", {"course":course, "data":data})
 
+@login_required
 def extend_session(request):
     print(request.POST)
     return True
@@ -216,10 +164,10 @@ if "Vartic2" in subprocess.check_output(['netsh', 'wlan', 'show', 'interfaces'])
 
     
 def page_404(request, *args, **argv):
-    response = render(request,'404.html', {"sessionDict": sessionDict})
+    response = render(request,'404.html', {})
     response.status_code = 404
     return response
 
 
 def page_500(request):
-    return render(request,'500.html', {"sessionDict": sessionDict})
+    return render(request,'500.html', {})

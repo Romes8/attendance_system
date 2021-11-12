@@ -1,4 +1,33 @@
+from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
+
+class UserManager(BaseUserManager):
+    def create_user(self, username, role, password=None):
+        if not username:
+            raise ValueError('Users must have an username')
+        
+        user = self.model(
+            username=username,
+            role = role,
+        )
+        user.set_password(password)
+        user.is_active = True
+        user.save(using=self._db)
+
+class MyUser(AbstractBaseUser):
+    username = models.CharField(unique=True, max_length=20, blank=True, null=True)
+    role = models.ForeignKey('Roles', models.DO_NOTHING, db_column='role', blank=True, null=True)
+    is_active = models.IntegerField()
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['password', 'role']
+
+    objects = UserManager()
+
+    class Meta:
+        db_table = 'user'
+
+
 
 class Login(models.Model):
     username = models.CharField(unique=True, max_length=20, blank=True, null=True)

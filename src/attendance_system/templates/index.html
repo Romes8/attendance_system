@@ -5,21 +5,21 @@
 {%endblock bootstrap%}
 
 {%block username%}
-    {{sessionDict.username}}
+    {{request.session.username}}
 {%endblock username%}
 
 {%block role%}
-    {{sessionDict.role}}
+    {{request.session.role}}
 {%endblock role%}
 
 {% block content %}
     
     <br>
         <div class = "container-fluid" style="text-align: center;">
-            <h1>{{ sessionDict.name }}</h1>
+            <h1>{{ request.session.name }}</h1>
             <h1><span id="cur_time"></span></h1>
         </div>
-        {% if sessionDict.role == "teacher" %} 
+        {% if request.session.role == "teacher" %} 
         <br>
         </br>
         <div class = "container-md">

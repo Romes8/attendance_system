@@ -6,11 +6,11 @@
 {%endblock bootstrap%}
 
 {%block username%}
-    {{sessionDict.username}}
+    {{request.session.username}}
 {%endblock username%}
 
 {%block role%}
-    {{sessionDict.role}}
+    {{request.session.role}}
 {%endblock role%}
 
 {% block content %}
