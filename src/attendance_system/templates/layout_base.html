@@ -9,7 +9,7 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com">
 	<meta charset="utf-8" />
 	<base href="http://127.0.0.1:8000" />
-	<meta name="author" content="Roman Zvoda" />
+	<meta name="author" content="Roman Zvoda & Catalina Vartic" />
 	<meta name="generator" content="Joomla! - Open Source Content Management" />
 	<title>KEA - Attendance system</title>
 	<link href="https://kea.dk/templates/kea/css/template.css?1.0.26" rel="stylesheet" />
@@ -45,7 +45,7 @@
 				</span>
 			</div>
 
-			<div class="brand">
+			<div class="brand" style="height: 80px;">
 				<a href="/index/">
 					<img class="hidden-xs hidden-sm" src="https://kea.dk/images/resources/logo-main-black-single.png" alt="KEA - Københavns Erhvervsakademi - logo">
 					<img class="hidden-md hidden-lg" src="https://kea.dk/images/resources/logo-small.png" alt="KEA - Københavns Erhvervsakademi - logo">
@@ -53,9 +53,9 @@
 			</div>
 			<nav class="hidden-xs hidden-sm">
 				<ul class="nav menu dropdown mod-list">
-                    {% if sessionDict.role == "student" %}
+                    {% if request.session.role == "student" %}
                         <li><a href="/history/" class="nav_text">History</a></li>
-					{% elif sessionDict.role == "teacher" %}
+					{% elif request.session.role == "teacher" %}
 					<li><a href="/settings/" class="nav_text">Settings</a></li>
 					{% endif %}
 				</ul> 
@@ -64,6 +64,7 @@
 	</div>
 	<!-- Shape -->
 	{% block content %}
+
 	
 	{% endblock %}
 	<input type="hidden" id="custId" name="custId" value="3487">
@@ -71,6 +72,16 @@
 </html>
 
 <style>
+    .table-size{
+        width: 80%;
+        margin: auto;
+    }
+	.headers{
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 30px;
+        color: cornsilk;
+        background-color: #28344c;
+    }
 	.card_pic{
 		background-image : url("https://kea.dk/images/resources/logo-main-black-single.png");
 		width: 220px;
@@ -86,6 +97,7 @@
 
 	.nav_text{
 		font-size: 19px;
+		align-self: center;
 	}
 
 	.big_text{

@@ -8,7 +8,6 @@ def get_courses(id):
         data = []
         query_results = TeacherCourse.objects.filter(teacher=id)
         for query in query_results:
-            print(query.id)
             rooms = Blocks.objects.get(teacher_course=query.id, date = '2021-10-12 8:30:00').room
             room = rooms.campus.name +  ' ' + rooms.building + ' ' + str(rooms.room)
             data.append({
@@ -31,20 +30,6 @@ def settings(id):
             'period': query.checkinperiod,
             'reminder': query.reminder}
         return data
-    except:
-        Exception
-
-
-def create_event_block(block_id, teacher_id):
-    try:
-        start_time = Blocks.objects.get(id=1).date
-        print(start_time)
-        cur = connection.cursor()
-        print("sql")
-        cur.execute = ("DROP EVENT deactivate_block1")
-        print("hello")
-        cur.close()
-        return 0
     except:
         Exception
 
@@ -86,38 +71,44 @@ def deactivate_block(id, dateTime):
     except:
         Exception
         
-def get_students(class_id):
-    print(class_id)
+def get_students(class_id, teacher_course):
     try:
         students = []
+        subject = TeacherCourse.objects.get(id=teacher_course).course_class.course.subject
         query = StudentClass.objects.filter(class_field=class_id)
         for result in query:
             students.append({
-                "firstname": result.student.firstname,
-                "lastname": result.student.lastname,
+                "name": result.student.firstname + ' ' + result.student.lastname,
                 "id": result.student.id})
             
-        return students
+        return students, subject
     except:
         Exception
-        print("exeption")
 
 def get_student_attendance(teacher_course, student_id):
     try:
         attendance = []
-        print("hello")
         student = Students.objects.get(id=student_id)
         course = TeacherCourse.objects.get(id=teacher_course).course_class.course.subject
-        name = student.lastname + ' ' + student.firstname
+        name = student.firstname + ' ' + student.lastname
         blocks = Blocks.objects.filter(teacher_course=teacher_course)
         for block in blocks:
-            print(block)
             record = Attendance.objects.get(student=student_id, block=block)
-            print(record)
             attendance.append({
                 "date": block.date,
                 "status": record.status
             })
+    
         return attendance, name, course
     except:
-        return [], name, course
+        return attendance, name, course
+
+def saveChanges(id, isBlocks, period, reminder):
+    try:
+        settings = Settings.objects.get(teacher=id)
+        settings.isblocks = True if isBlocks == 'on' else False
+        settings.checkinperiod = period
+        settings.reminder = True if reminder == 'on' else False
+        settings.save(update_fields=['isblocks', 'checkinperiod', 'reminder'])
+    except:
+        print(Exception)

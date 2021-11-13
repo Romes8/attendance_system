@@ -38,9 +38,7 @@ def check_active(id, date):
     try:
         active_blocks = [] 
         teacher_course_id = TeacherCourse.objects.get(course_class=id).id
-        print(teacher_course_id)
         blocks = Blocks.objects.filter(teacher_course=3, date__contains=datetime.date(2021, 10, 12))
-        print(blocks)
         for block in blocks:
             if block.is_active:
                 active_blocks.append(block.id)
@@ -50,10 +48,8 @@ def check_active(id, date):
 
 def check_entered_code(blocks,code):
     try:
-        print(blocks)
         for block in blocks:
-            print(block)
-        valid_code = Blocks.objects.get(id=blocks[0]).code
+            valid_code = Blocks.objects.get(id=blocks[0]).code
         if code == valid_code:
             return True
         return False

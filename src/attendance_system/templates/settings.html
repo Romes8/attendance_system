@@ -21,12 +21,13 @@
     </div>
 <br>
     <div class="container-md">
+    <form action="" method="post"> {% csrf_token %}
     <table class="table table-striped" style="text-align: center;">
         <tr>
             <td>Enable blocks</td>
             <td>
                 <div>
-                    <input type="checkbox" {% if data.isBlocks %} checked {% endif %}/>
+                    <input name = "isBlocks" type="checkbox" {% if data.isBlocks %} checked {% endif %}/>
                     <span></span>
                 </div>
             </td>
@@ -35,7 +36,7 @@
             <td>Minutes available to check in</td>
             <td>
                 <div>
-                    <input type="number" min='0' max='30' value='{{data.period}}' /> minutes
+                    <input name = "period" type="number" min='0' max='30' value='{{data.period}}' /> minutes
                     <span></span>
                 </div>
             </td>
@@ -44,7 +45,7 @@
             <td>Reminder</td>
             <td>
                 <div>
-                    <input type="checkbox" {% if data.reminder %} checked {% endif %} />
+                    <input name = "reminder" type="checkbox" {% if data.reminder %} checked {% endif %} />
                     <span></span>
                 </div>
             </td>
@@ -52,9 +53,11 @@
         <tr style="text-align: center;">
             <td colspan="2">
                 <input type="submit" value="Save Settings" >
+    
             </td>
         </tr>
     </table>
+    </form>
 </div>
 {% endblock content %}
 

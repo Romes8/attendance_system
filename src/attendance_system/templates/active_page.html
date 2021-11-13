@@ -14,7 +14,13 @@
 {%endblock role%}
 
 {% block content %}
-<br>
+<button><a href="/index/">Go Back</a></button>
 <h2 style="text-align:center;">Generated code: </h2>
 <h1 style="text-align: center;">{{code}}</h1>
+
+<script>
+    function goBack() {
+      window.history.back();
+    }
+</script>
 {% endblock content %}

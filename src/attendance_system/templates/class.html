@@ -14,6 +14,7 @@
 {%endblock role%}
 
 {% block content %}
+    <button onclick="goBack()">Go Back</button>
     <div class = "container-fluid" style="text-align: center;">
         <h1>{{ request.session.name }}</h1>
         <h1><span id="cur_time"></span></h1>
@@ -161,6 +162,12 @@
                 }
             });
         }
+
+        
+        function goBack() {
+            window.history.back();
+        }
+
 
     </script>
 

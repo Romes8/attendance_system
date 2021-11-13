@@ -16,7 +16,7 @@
     
     <br>
         <div class = "container-fluid" style="text-align: center;">
-            <h1>{{ request.session.name }}</h1>
+            <h2 class="name">{{ request.session.name }}</h2>
             <h1><span id="cur_time"></span></h1>
         </div>
         {% if request.session.role == "teacher" %} 
@@ -24,15 +24,15 @@
         </br>
         <button onclick="getLocation()">GPS</button>
         <p id="demo"></p>
-        <div class = "container-md">
+        <div class = "table-size">
             <table class="table table-striped">
                 <thead>
-                    <tr>
+                    <tr class="headers">
                         <th scope = "col">Class</th>
                         <th scope = "col">Subject name</th>
                         <th scope = "col">Room</th>
-                        <th scope = "col">Details</th>
-                        <th scope = "col">Open</th>
+                        <th scope = "col"></th>
+                        <th scope = "col"></th>
                     </tr>
                 </thead>
                 {% for row in data %}
@@ -70,51 +70,6 @@
         {%endif%}
     
     <style>
-        .div {
-            width: 90%;
-            height: 40%;
-            margin: 5%;
-        }
-
-        .div-div {
-            width: 33%;
-            height: 100px;
-            float: left;
-        }
-
-        .div-- {
-            width: 90%;
-            height: 100px;
-            float: center;
-        }
-
-        .nav_text{
-            font-size: 19px;
-        }
-    
-        .big_text{
-            font-size: xx-large;
-        }
-
-        .but{
-            background-color:#44c767;
-            border-radius:10px;
-            border:3px solid #18ab29;
-            display:inline-block;
-            cursor:pointer;
-            color:#ffffff;
-            font-size:19px;
-            padding:20px 49px;
-        }
-
-        .code_form{
-            border: 2px solid #233249;
-            border-radius: 4px;
-        }
-
-        .code_form:focus{
-            border: 3px solid #555;
-        }
 
         .board {
             width: 80%;

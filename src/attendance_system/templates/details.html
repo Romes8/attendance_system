@@ -14,25 +14,24 @@
 {%endblock role%}
 
 {% block content %}
-    <br></br>
-    <div class = "container-fluid" style="text-align: center;">
-        <h1 id="course">{{ subject_name }}</h1>
-        <h1><span id="cur_time"></span></h1>
+    <div class = "container-fluid">
+        <button onclick="goBack()">Go Back</button>
+        <div style="text-align: center;">
+            <h2 id="course" >{{ subject_name }}</h2>
+        </div>
     </div>
     <br></br>
     <div class="table-size">
         <table class="table table-striped">
             <thead>
-                <tr>
-                    <th scope = "col">First name</th>
-                    <th scope = "col">Last name</th>
-                    <th scope = "col" class="right">See attendance details</th>
+                <tr class="headers">
+                    <th scope = "col">Name</th>
+                    <th scope = "col" class="right">See attendance</th>
                 </tr>
             </thead>
             {% for student in students %}
             <tr>
-                <th>{{ student.firstname }}</th>
-                <th>{{ student.lastname }}</th>
+                <th>{{ student.name }}</th>
                 <th class="right"><a href="/student/{{teacher_course}}/{{student.id}}/" class="btn btn-primary">Open</a></th>
             </tr>
             {% endfor %}
@@ -45,12 +44,24 @@
         width: 65%;
         margin: auto;
     }
+    .headers{
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 30px;
+        color: cornsilk;
+        background-color: #28344c;
+    }
 
     .right{
         text-align: right;
         padding: 20px;
     }
 </style>
+
+<script>
+    function goBack() {
+      window.history.back();
+    }
+</script>
 
 
 {%endblock content %}

@@ -6,27 +6,29 @@
 {%endblock bootstrap%}
 
 {%block username%}
-    {{sessionDict.username}}
+    {{request.session.username}}
 {%endblock username%}
 
 {%block role%}
-    {{sessionDict.role}}
+    {{request.session.role}}
 {%endblock role%}
 
 {% block content %}
 <br>
     <div class = "container-fluid" style="text-align: center;">
-        <h2 class=name>{{ sessionDict.name }}</h2>
+        <h2 class=name>{{ request.session.name }}</h2>
         <h1><span id="cur_time"></span></h1>
     </div>
 <br>
-    <div class="container-md">
+    <div class="table-size">
         <table class="table table-striped">
-            <tr>
-                <th>Date</th>
-                <th>Subject</th>
-                <th>Status</th>
-            </tr>
+            <thead>
+                <tr class="headers">
+                    <th>Date</th>
+                    <th>Subject</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
         {% for row in data %}
             <tr>
                 <td>{{ row.date}}</td>
@@ -36,4 +38,8 @@
         {% endfor %}
         </table>
     </div>
+
+<style>
+
+</style>
 {% endblock content %}

@@ -14,23 +14,24 @@
 {%endblock role%}
 
 {% block content %}
-<br></br>
+<button onclick="goBack()">Go Back</button>
 <div class = "container-fluid" style="text-align: center;">
     <h2> {{ course }}</h2>
-    <h4 >{{ name }}</h4>
+    <br></br>
+    <p style="font-size: 20px;">{{ name }}</p>
 </div>
 <br></br>
 <div class="table-size">
     <table class="table table-striped">
         <thead>
-            <tr>
-                <th scope = "col">Date</th>
-                <th scope = "col">Status</th>
+            <tr class="headers">
+                <th>Date</th>
+                <th>Status</th>
             </tr>
         </thead>
         {% for record in data %}
         <tr>
-            <th>{{ record.date}}</th>
+            <th>{{ record.date|date:'Y-m-d H:i'}}</th>
             <th>{{ record.status }}</th>
         </tr>
         {% endfor %}
@@ -38,5 +39,24 @@
 </div>
 </div>
 
+<style>
+    .table-size{
+        width: 65%;
+        margin: auto;
+    }
+
+    .headers{
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 30px;
+        color: cornsilk;
+        background-color: #28344c;
+    }
+</style>
+
+<script>
+    function goBack() {
+      window.history.back();
+    }
+</script>
 
 {%endblock content %}

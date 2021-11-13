@@ -17,12 +17,8 @@ import subprocess
 
 # Authenticate and login the user     
 def login_page(request):
-        
-    if request.method == 'GET':
-        print("Get method activated")
 
     if request.method == 'POST':
-        print("POST on index")
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
@@ -32,7 +28,6 @@ def login_page(request):
             request.session['username'] = username
             request.session['role'] = user.role.name
             request.session['id'], request.session['name'] = database.get_userID_name(user.role.name, username)
-            print("yes")
             return redirect ('/index/')
         else:
             messages.error(request,'username or password not correct')
@@ -83,6 +78,11 @@ def history_page(request):
 @login_required
 def settings_page(request):
     if request.session.get('role') == 'teacher':
+        if request.method == 'POST':
+            isBlocks = request.POST.get('isBlocks')
+            period = request.POST.get('period')
+            reminder = request.POST.get('reminder')
+            teacher.saveChanges(request.session.get('id'),isBlocks, period, reminder)
         data = teacher.settings(request.session.get('id'))
         return render(request, "settings.html", {'data': data})
     else:
@@ -119,13 +119,7 @@ def class_selected(request, class_course):
 #
 @login_required          
 def details_page(request, teacher_course, class_id):
-    print("Details page")
-    students = teacher.get_students(class_id)
-    data = teacher.get_courses(request.session.get('id'))
-    for dat in data:
-        if dat['class_id'] == class_id:
-            subject_name = dat['subject']
-            
+    students, subject_name = teacher.get_students(class_id, teacher_course)            
     return render(request, "details.html", {"students": students, "teacher_course":teacher_course, "subject_name":subject_name})
 
 @login_required
@@ -133,16 +127,10 @@ def student_details(request, teacher_course, student_id):
     data, name, course = teacher.get_student_attendance(teacher_course, student_id)
     return render(request, "student.html", {"data":data, "name":name, "course":course})
 
-@login_required
-def extend_session(request):
-    print(request.POST)
-    return True
-
 
 @csrf_exempt
 def check_code(request):
     data = json.loads(request.POST.get('json_data'))
-    print(data)
     code = data['code']
     blocks = data['blocks']
     student_id = data['student_id']
