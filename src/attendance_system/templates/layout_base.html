@@ -11,7 +11,11 @@
 	<base href="http://127.0.0.1:8000" />
 	<meta name="author" content="Roman Zvoda & Catalina Vartic" />
 	<meta name="generator" content="Joomla! - Open Source Content Management" />
-	<title>KEA - Attendance system</title>
+	<title>
+	{%block title %}
+
+	{%endblock%}
+	</title>
 	<link href="https://kea.dk/templates/kea/css/template.css?1.0.26" rel="stylesheet" />
 
 	<!-- BOOTSRAP-->
@@ -34,7 +38,7 @@
 						<li class="item-366 medium_text">{%block role%}{% endblock %}</a></li>
 						<li class="item-367 medium_text">{%block username%}{% endblock %}</a></li>
 						<li class="item-368 medium_text">|</li>
-						<li class="item-369 medium_text"><a href="/logout/" rel="noopener noreferrer">Log out</a></li>
+						<li class="item-369 medium_text"><a href="/logout/" rel="noopener noreferrer" name="logout">Log out</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -89,6 +93,8 @@
 	}
 	.name{
 		font-family: 'Courier New', Courier, monospace;
+		font-weight: bold;
+		font-size: 50px;
 	}
 
 	.medium_text{

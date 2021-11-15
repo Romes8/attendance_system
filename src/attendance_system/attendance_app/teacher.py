@@ -1,5 +1,5 @@
 from attendance_app.models import Attendance, Courses, Students, TeacherCourse, Blocks, Settings, StudentClass
-from datetime import datetime
+import datetime
 from django.db import connection
 
 
@@ -38,15 +38,17 @@ def activate_lesson(id, date, code):
     try:
         blocks = Blocks.objects.filter(teacher_course=id, date__contains=datetime.date(date.year, date.month, date.day))
         for block in blocks:
+            print(block)
             block.code = code
             block.is_active = True
             block.save(update_fields=["is_active", "code"])
     except:
         Exception
 
-def deactivate_lesson():
+def deactivate_lesson(id, date):
     try:
-        lesson = Blocks.objects.filter(teacher_course=3, date__contains=datetime.date(2021, 10, 12))
+        print("trying 5")
+        lesson = Blocks.objects.filter(teacher_course=id, date__contains=datetime.date(date.year, date.month, date.day))
         for block in lesson:
             block.is_active = False
             block.save(update_fields=["is_active"])
@@ -55,6 +57,7 @@ def deactivate_lesson():
 
 def activate_block(id, dateTime, code):
     try:
+        print("trying 2")
         block = Blocks.objects.get(teacher_course=id, date__contains=datetime.date(dateTime.year, dateTime.month, dateTime.day), date__hour=dateTime.hour)
         block.code = code
         block.is_active = True
@@ -65,7 +68,7 @@ def activate_block(id, dateTime, code):
 
 def deactivate_block(id, dateTime):
     try:
-        block = Blocks.objects.get(teacher_course=id, date_contains=datetime.date(dateTime.year, dateTime.month, dateTime.day), date__hour=datetime.hour)
+        block = Blocks.objects.get(teacher_course=id, date__contains=datetime.date(dateTime.year, dateTime.month, dateTime.day), date__hour=dateTime.hour)
         block.is_active = False
         block.save(update_fields=["is_active"])
     except:
@@ -98,7 +101,6 @@ def get_student_attendance(teacher_course, student_id):
                 "date": block.date,
                 "status": record.status
             })
-    
         return attendance, name, course
     except:
         return attendance, name, course

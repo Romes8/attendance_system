@@ -94,12 +94,17 @@ def settings_page(request):
 def active_class(request, teacher_course):
 
     if request.session.get('role') == 'teacher':
-        global start_time
         curDate = datetime.now()
+        print(curDate)
+        print("trynng 1")
         code = random_string()
-        block_id = teacher.activate_block(teacher_course, curDate, code)
-        teacher.create_event_block(block_id, request.session.get('id'))
-        threading.Timer(900, teacher.deactivate_block, [teacher_course, curDate]).start()
+        settings = teacher.settings(request.session.get('id'))
+        if settings['isBlocks']:
+            teacher.activate_block(teacher_course, curDate, code)
+            threading.Timer(settings['period'], teacher.deactivate_block, [teacher_course, curDate]).start()
+        else:
+            teacher.activate_lesson(teacher_course, curDate, code)
+            threading.Timer(settings['period'], teacher.deactivate_lesson, [teacher_course, curDate]).start()
         return render(request, "active_page.html", {'code':code})
     return redirect('/index/')
 

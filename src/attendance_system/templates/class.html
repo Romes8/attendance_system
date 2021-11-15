@@ -1,6 +1,8 @@
 {% extends 'layout_base.html' %}
 {% load static %}
 
+{% block title %}KEA - Attendance(Classes){% endblock %}
+
 {%block bootstrap%}
     
 {%endblock bootstrap%}
@@ -16,101 +18,56 @@
 {% block content %}
     <button onclick="goBack()">Go Back</button>
     <div class = "container-fluid" style="text-align: center;">
-        <h1>{{ request.session.name }}</h1>
+        <p class="name">{{ request.session.name }}</p>
         <h1><span id="cur_time"></span></h1>
     </div>
     {% if type %}
-    <h2 style="text-align: center;">You have one active {{type}}</h2>
-        <div class="board">
-        <div class="box">
-          <h1>
-          Enter code:
-          </h1>
-          <input type="hidden" id="student" value="{{request.session.id}}">
-        </div>
-        <div class="box">
-            <input id="code" type="text" class="code_form"></input>
-        </div>
-        <div class="box">
-            <button id="block" class="button" onclick="send_value()">
-                Attend lesson
-            </button>
-        </div>       
-    </div>
+    <p style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 30px;">You have one active {{type}}</p>
+       <br><div style="text-align: center;">
+        <p class="header_code">Enter code:</p>
+        <input id="code" type="text" class="code_form"></input>
+        <br><button id="block" class="button" onclick="send_value()">
+            Attend lesson
+        </button> </div>    
     {% else %}
-    <h2 style="text-align: center;">You don't have any active blocks for this course</h2>
+    <p style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 30px;">You don't have any active blocks for this course</p>
     {% endif %}   
 
     <style>
-        .board {
-            width: 40%;
-            height: 90%;
-            margin-top: 5%;
-            margin-left: 30%;
-        }
-        
-        .box {
-            width: 100%;
-            height: 100px;
-            float: left;
-           
-        }
-        
-        .card {
-            width: 90%;
-            height: 90%;
-            float: left;
-            margin: 5%;
-            border-radius: 5px;
-            border-radius: 20px;
-        }
-        
-        .tophalf {
-            width: 100%;
-            height: 40%;
-            background-color: transparent;
-            float: left;
-        }
-        
-        
-        .classname {
-            text-align: center;
-            padding: 10%;
-        }
-        
-        .bottomhalf {
-            width: 100%;
-            height: 50%;
-            float: left;
-        }
-        
+              
         .button {
-            width: 70%;
-            height: 60%;
-            margin-top: 5%;
-            margin-left: 15%;
+            width: 200px;
+            height: 75px;
+            margin-top: 3%;
             background-color: #44c767;
             border-radius: 100px;
             border: 3px solid #18ab29;
-            display: inline-block;
-            cursor: pointer;
             color: #ffffff;
             font-size: 19px;
-           
+            align-self: center;
+        }
 
+        .header_code {
+            width: 35%;
+            margin-left: 32.5%;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 50px;
+            color: cornsilk;
+            background-color: #28344c;
+            text-align: center;
         }
 
         .code_form {
             border: none;
             border-bottom: 4px solid #233249;
             background-color: transparent;
-            width: 70%;
-            margin-left: 15%;
-            height: 70%;
-            font-size: 30px;
+            width: 35%;
+            height: 20%;
+            font-size: 40px;
             text-align: center;
             color: #233249;
-
+            margin-top: 3%;
         }
 
         .code_form:active {

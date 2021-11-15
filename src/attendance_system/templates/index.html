@@ -1,6 +1,8 @@
 {% extends 'layout_base.html' %}
 {% load static %}
 
+{% block title %}KEA - Attendance{% endblock %}
+
 {%block bootstrap%}
 {%endblock bootstrap%}
 
@@ -16,7 +18,7 @@
     
     <br>
         <div class = "container-fluid" style="text-align: center;">
-            <h2 class="name">{{ request.session.name }}</h2>
+            <p class="name">{{ request.session.name }}</P>
             <h1><span id="cur_time"></span></h1>
         </div>
         {% if request.session.role == "teacher" %} 

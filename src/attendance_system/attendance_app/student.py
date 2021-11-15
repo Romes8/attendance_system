@@ -38,7 +38,7 @@ def check_active(id, date):
     try:
         active_blocks = [] 
         teacher_course_id = TeacherCourse.objects.get(course_class=id).id
-        blocks = Blocks.objects.filter(teacher_course=3, date__contains=datetime.date(2021, 10, 12))
+        blocks = Blocks.objects.filter(teacher_course=teacher_course_id, date__contains=datetime.date(date.year, date.month, date.day))
         for block in blocks:
             if block.is_active:
                 active_blocks.append(block.id)
@@ -48,8 +48,7 @@ def check_active(id, date):
 
 def check_entered_code(blocks,code):
     try:
-        for block in blocks:
-            valid_code = Blocks.objects.get(id=blocks[0]).code
+        valid_code = Blocks.objects.get(id=blocks[0]).code
         if code == valid_code:
             return True
         return False
@@ -61,8 +60,9 @@ def check_as_present(student_id, blocks):
     try:
         for block in blocks:
             if Attendance.objects.filter(student_id=student_id, block_id=block).exists():
-                return False
+                state = False
             Attendance.objects.create(student_id=student_id, block_id=block, status="present")
-            return True
+            state = True
+        return state
     except:
         Exception
