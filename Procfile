@@ -1,2 +1,3 @@
-gunicorn  attendance_system:application -b xx.xxx.xxx.xx:8000
-
+gunicorn  attendance_system.wsgi:application
+python manage.py collectstatic --noinput
+manage.py migrate
