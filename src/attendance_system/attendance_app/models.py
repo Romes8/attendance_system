@@ -67,8 +67,8 @@ class Students(models.Model):
     lastname = models.CharField(db_column='lastName', max_length=50)  # Field name made lowercase.
     firstname = models.CharField(db_column='firstName', max_length=50)  # Field name made lowercase.
     phonenumber = models.CharField(db_column='phoneNumber', max_length=10, blank=True, null=True)  # Field name made lowercase.
-    user = models.ForeignKey('Login', models.DO_NOTHING, blank=True, null=True)
-
+    user = models.ForeignKey('MyUser', models.DO_NOTHING, blank=True, null=True)
+    email = models.EmailField(max_length=30)
     class Meta:
         managed = False
         db_table = 'students'
@@ -77,8 +77,8 @@ class Teachers(models.Model):
     lastname = models.CharField(db_column='lastName', max_length=50)  # Field name made lowercase.
     firstname = models.CharField(db_column='firstName', max_length=50)  # Field name made lowercase.
     phonenumber = models.CharField(db_column='phoneNumber', max_length=10)  # Field name made lowercase.
-    user = models.ForeignKey('Login', models.DO_NOTHING, blank=True, null=True)
-
+    user = models.ForeignKey('MyUser', models.DO_NOTHING, blank=True, null=True)
+    email = models.EmailField(max_length=30)
     class Meta:
         managed = False
         db_table = 'teachers'

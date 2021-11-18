@@ -132,6 +132,20 @@ def student_details(request, teacher_course, student_id):
     data, name, course = teacher.get_student_attendance(teacher_course, student_id)
     return render(request, "student.html", {"data":data, "name":name, "course":course})
 
+def forgot_pass(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        message = database.forgot_pass(email)
+        return render(request, "forgotpass.html", {"message": message})
+    return render(request, "forgotpass.html")
+
+
+def change_pass(request):
+    if request.method == 'POST':
+        password = request.POST.get("password")
+        message = database.change_pass(1, password)
+        return render(request, "changepass.html", {"message": message})
+    return render(request, "changepass.html")
 
 @csrf_exempt
 def check_code(request):

@@ -76,6 +76,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'attendance_system.wsgi.application'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'keaexample5@gmail.com'
+EMAIL_HOST_PASSWORD = 'Databases2021'
+EMAIL_PORT = 587
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
