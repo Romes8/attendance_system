@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath attendance_system attendance_system.wsgi
+web: gunicorn --chdir src attendance_system attendance_system.wsgi
