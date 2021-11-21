@@ -1,3 +1,0 @@
-assume that:
-   - the blocks are set up by administration in database  (1 block = 2 lectures of 45min => 1:30h)
-   - the rooms can change
