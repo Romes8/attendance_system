@@ -79,12 +79,21 @@ WSGI_APPLICATION = 'attendance_test.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {  #multiplestatements needs to be set to false when doing database
+    #'default': {  #multiplestatements needs to be set to false when doing database 
+     #   'ENGINE': 'django.db.backends.mysql',
+      #  'NAME': 'qr8jfeyxl3qg3wq2',
+       # 'USER': 'yc65duearapfot5j',
+        #'PASSWORD': 'f7jk0qvi2rrh0xnd',
+        #'HOST': 'esilxl0nthgloe1y.chr7pe7iynqr.eu-west-1.rds.amazonaws.com',
+        #'PORT': '3306',
+    #}
+    # restored deleted database
+     'default': {  #multiplestatements needs to be set to false when doing database 
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'qr8jfeyxl3qg3wq2',
-        'USER': 'yc65duearapfot5j',
-        'PASSWORD': 'f7jk0qvi2rrh0xnd',
-        'HOST': 'esilxl0nthgloe1y.chr7pe7iynqr.eu-west-1.rds.amazonaws.com',
+        'NAME': 'c93y1o4v1n3k0jon',
+        'USER': 'bgirscr52rjxper1',
+        'PASSWORD': 'qfa0hzwkv2ivv03g',
+        'HOST': 'jtb9ia3h1pgevwb1.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         'PORT': '3306',
     }
 }

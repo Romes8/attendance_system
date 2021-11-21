@@ -175,9 +175,6 @@ def random_string():
     return finalStr
 
 
-# check for the right wifi connection
-
-
 
 def page_404(request, *args, **argv):
     response = render(request, '404.html', {})
