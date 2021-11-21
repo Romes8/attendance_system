@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-x)*4fx18nvc9(fx$3(+3097q5t82_*xb!ys-m0&l!0(o6s(lyu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['attendancesystemtest.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['kea-attendance.herokuapp.com', '127.0.0.1']
 
 LOGIN_URL = '/login/'
 
