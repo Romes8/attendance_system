@@ -59,9 +59,11 @@ def check_as_present(student_id, blocks):
     try:
         for block in blocks:
             if Attendance.objects.filter(student_id=student_id, block_id=block).exists():
+
                 state = False
-            Attendance.objects.create(student_id=student_id, block_id=block, status="present")
-            state = True
+            else: 
+                Attendance.objects.create(student_id=student_id, block_id=block, status="present")
+                state = True
         return state
     except:
         Exception
