@@ -174,7 +174,9 @@ def random_string():
     finalStr = ''.join(lst)
     return finalStr
 
-
+    
+if "Vartic2" in subprocess.check_output(['netsh', 'wlan', 'show', 'interfaces']).decode('utf-8'):
+    print('good network')
 
 def page_404(request, *args, **argv):
     response = render(request, '404.html', {})
