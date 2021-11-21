@@ -11,7 +11,6 @@ import herokuapp.teacher as teacher
 from datetime import datetime, timedelta
 import json
 import threading
-import subprocess
 
 
 # Authenticate and login the user

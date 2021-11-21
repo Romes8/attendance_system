@@ -61,8 +61,7 @@ def activate_block(id, dateTime, code):
     try:
         print("trying 2")
         block = Blocks.objects.get(teacher_course=id,
-                                   date__contains=datetime.date(dateTime.year, dateTime.month, dateTime.day),
-                                   date__hour=dateTime.hour)
+                                   date__contains=datetime.date(dateTime.year, dateTime.month, dateTime.day), date__hour=dateTime.hour)
         block.code = code
         block.is_active = True
         block.save(update_fields=["is_active", "code"])
@@ -74,8 +73,7 @@ def activate_block(id, dateTime, code):
 def deactivate_block(id, dateTime):
     try:
         block = Blocks.objects.get(teacher_course=id,
-                                   date__contains=datetime.date(dateTime.year, dateTime.month, dateTime.day),
-                                   date__hour=dateTime.hour)
+                                   date__contains=datetime.date(dateTime.year, dateTime.month, dateTime.day), date__hour=dateTime.hour)
         block.is_active = False
         block.save(update_fields=["is_active"])
     except:
