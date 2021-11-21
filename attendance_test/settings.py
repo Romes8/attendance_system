@@ -26,9 +26,11 @@ SECRET_KEY = 'django-insecure-x)*4fx18nvc9(fx$3(+3097q5t82_*xb!ys-m0&l!0(o6s(lyu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+IPRESTRICT_GEOIP_ENABLED = False
 ALLOWED_HOSTS = ['kea-attendance.herokuapp.com', '127.0.0.1']
 
 LOGIN_URL = '/login/'
+ALLOWED_IP_BLOCKS = ['172.18.0.1/24']
 
 # Application definition
 
@@ -40,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'herokuapp',
+    'iprestrict',
 ]
 
 MIDDLEWARE = [

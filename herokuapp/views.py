@@ -11,6 +11,7 @@ import herokuapp.teacher as teacher
 from datetime import datetime, timedelta
 import json
 import threading
+from django.conf import settings
 
 
 # Authenticate and login the user
@@ -57,7 +58,8 @@ def index_page(request):
     if request.session.get('role') == 'teacher':
         data = teacher.get_courses(request.session.get('id'))
     else:
-        data = student.get_courses(request.session.get('id'))
+        if request.META['REMOTE_ADDR'] in settings.ALLOWED_IP_BLOCKS:
+            data = student.get_courses(request.session.get('id'))
     return render(request, "index.html", {'data': data})
 
 
