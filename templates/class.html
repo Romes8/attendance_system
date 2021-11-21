@@ -20,6 +20,7 @@
     <div class = "container-fluid" style="text-align: center;">
         <p class="name">{{ request.session.name }}</p>
         <h1><span id="cur_time"></span></h1>
+        <input type="hidden" id="student" value="{{request.session.id}}">
     </div>
     {% if type %}
     <p style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 30px;">You have one active {{type}}</p>
