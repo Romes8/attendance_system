@@ -100,7 +100,7 @@ def active_class(request, teacher_course):
             threading.Timer(settings['period'], teacher.deactivate_block, [teacher_course, curDate]).start()
         else:
             teacher.activate_lesson(teacher_course, curDate, code)
-            threading.Timer(settings['period'], teacher.deactivate_lesson, [teacher_course, curDate]).start()
+            threading.Timer(10, teacher.deactivate_lesson, [teacher_course, curDate]).start()
         return render(request, "active_page.html", {'code': code})
     return redirect('/index/')
 
