@@ -59,7 +59,7 @@ def index_page(request):
         data = teacher.get_courses(request.session.get('id'))
     else:
         print(request.META['REMOTE_ADDR'])
-        if request.META['REMOTE_ADDR'] in settings.ALLOWED_IP_BLOCKS:
+        if request.META['HTTP_X_FORWARDED_FOR'] in settings.ALLOWED_IP_BLOCKS:
             data = student.get_courses(request.session.get('id'))
     return render(request, "index.html", {'data': data})
 
