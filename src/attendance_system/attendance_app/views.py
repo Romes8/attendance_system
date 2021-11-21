@@ -171,9 +171,7 @@ def random_string():
     finalStr = ''.join(lst)
     return finalStr
 
-
-# check for the right wifi connection 
-
+    
 if "Vartic2" in subprocess.check_output(['netsh', 'wlan', 'show', 'interfaces']).decode('utf-8'):
     print('good network')
 

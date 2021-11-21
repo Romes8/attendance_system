@@ -92,12 +92,21 @@ EMAIL_PORT = 587
 #        |   username  | pass   |       host                 |                     | no need for django
 #mysql://b9dcac94d41ae4:55fb2713@eu-cdbr-west-01.cleardb.com/heroku_a095ab98ce66108?reconnect=true
 DATABASES = {
-    'default': {  #multiplestatements needs to be set to false when doing database 
+    #'default': {  #multiplestatements needs to be set to false when doing database 
+     #   'ENGINE': 'django.db.backends.mysql',
+      #  'NAME': 'qr8jfeyxl3qg3wq2',
+       # 'USER': 'yc65duearapfot5j',
+        #'PASSWORD': 'f7jk0qvi2rrh0xnd',
+        #'HOST': 'esilxl0nthgloe1y.chr7pe7iynqr.eu-west-1.rds.amazonaws.com',
+        #'PORT': '3306',
+    #}
+    # restored deleted database
+     'default': {  #multiplestatements needs to be set to false when doing database 
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'qr8jfeyxl3qg3wq2',
-        'USER': 'yc65duearapfot5j',
-        'PASSWORD': 'f7jk0qvi2rrh0xnd',
-        'HOST': 'esilxl0nthgloe1y.chr7pe7iynqr.eu-west-1.rds.amazonaws.com',
+        'NAME': 'c93y1o4v1n3k0jon',
+        'USER': 'bgirscr52rjxper1',
+        'PASSWORD': 'qfa0hzwkv2ivv03g',
+        'HOST': 'jtb9ia3h1pgevwb1.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         'PORT': '3306',
     }
 }
