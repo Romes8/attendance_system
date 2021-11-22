@@ -31,8 +31,8 @@ jobs:
     - name: Deploy to Heroku 
       run: |
         git config user.email "roman.zvoda@yahoo.com"
-        git config --global user.name "Romes8"
+        git config user.name "Romes8"
         git add .
         git commit -m "deployed to Heroku | CI "
-        giut push heroku main 
+        git push heroku main 
 
