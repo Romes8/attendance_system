@@ -1,6 +1,6 @@
-name: Push to Heroku
+name: Deploy
 
-on: 
+on:
   push:
     branches:
       - main
@@ -9,22 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Heroku login credentials
-      run: |
-        cat > ~/.netrc <<EOF
-          machine api.heroku.com
-            login romanzvoda@yahoo.com
-            password ad1fed52-0033-4295-acbf-843a1eff9d09
-          machine git.heroku.com
-            login romanzvoda@yahoo.com
-            password ad1fed52-0033-4295-acbf-843a1eff9d09
-        EOF
-    - name: Add Heroku remote
-      run: heroku git:remote --app kea-attendance
-    - name: Add
-      run: git add .
-    - name: Commit
-      run: git commit -m "deploy"
-    - name: Push to Heroku
-      run: git push heroku main
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ad1fed52-0033-4295-acbf-843a1eff9d09
+          heroku_app_name: kea-attendance #Must be unique in Heroku
+          heroku_email: romanzvoda@yahoo.com
