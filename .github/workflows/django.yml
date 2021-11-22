@@ -29,11 +29,9 @@ jobs:
       run: |
         python manage.py test
     - name: Deploy to Heroku 
-      run: |
-        heroku git:remote -a kea-attendance
-        git config --global user.email "roman.zvoda@yahoo.com"
-        git config --global user.name "Romes8"
-        git add .
-        git commit -m "deployed to Heroku | CI "
-        git push heroku main 
+      uses: akhileshns/heroku-deploy@v3.12.12
+      with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
 
