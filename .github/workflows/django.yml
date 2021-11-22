@@ -31,9 +31,6 @@ jobs:
     - name: Deploy to Heroku 
       run: |
         heroku git:remote -a kea-attendance
-        heroku login -i
-        roman.zvoda@yahoo.com
-        Databases2021+
         git config --global user.email "roman.zvoda@yahoo.com"
         git config --global user.name "Romes8"
         git add .
