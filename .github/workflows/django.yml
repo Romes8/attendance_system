@@ -30,6 +30,8 @@ jobs:
         python manage.py test
     - name: Deploy to Heroku 
       run: |
+        git config user.email "roman.zvoda@yahoo.com"
+        git config user.name "Romes8"
         git add .
         git commit -m "deployed to Heroku | CI "
         git push heroku main 
