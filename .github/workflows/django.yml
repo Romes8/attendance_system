@@ -1,19 +1,20 @@
-on:
+name: Push to Heroku
+
+on: 
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - main
+
 jobs:
-  heroku_git_deploy_job:
-      runs-on: ubuntu-latest
-      name: Git Deploy job- A job to deploy django app to heroku using git
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v2
-        - name: Deploy django to heroku
-          uses: nyakaz73/heroku-django-deploy@v0.68 
-          with: 
-            heroku_app_name : kea-attendance
-            heroku_api_key: ad1fed52-0033-4295-acbf-843a1eff9d09
-            heroku_email_address: 'romanzvoda@yahoo.com'
-            use_git: true
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Login to Heroku
+      env: 
+        HEROKU_API_KEY: ad1fed52-0033-4295-acbf-843a1eff9d09
+      run: heroku login 
+    - name: Add Heroku remote
+      run: heroku git:remote -a kea-attendance
+    - name: Push to Heroku
+      run: git push heroku main
