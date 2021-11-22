@@ -111,11 +111,11 @@ def active_class(request, teacher_course):
 def class_selected(request, class_course):
     type = None
     active_blocks = student.check_active(class_course, datetime.now())
+    if len(active_blocks) == 1:
+        type = "block"
+    elif len(active_blocks) > 1:
+        type = "lesson"
     if request.META['HTTP_X_FORWARDED_FOR'] in settings.ALLOWED_IP_BLOCKS:
-        if len(active_blocks) == 1:
-            type = "block"
-        elif len(active_blocks) > 1:
-            type = "lesson"
         allow = True
     else:
         allow = False
