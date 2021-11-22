@@ -55,13 +55,10 @@ def home_page(request):
 # tecahers - classes + courses they teach
 @login_required
 def index_page(request):
-    data =[]
     if request.session.get('role') == 'teacher':
         data = teacher.get_courses(request.session.get('id'))
     else:
-        print(request.META['REMOTE_ADDR'])
-        if request.META['HTTP_X_FORWARDED_FOR'] in settings.ALLOWED_IP_BLOCKS:
-            data = student.get_courses(request.session.get('id'))
+        data = student.get_courses(request.session.get('id'))
     return render(request, "index.html", {'data': data})
 
 
@@ -114,11 +111,15 @@ def active_class(request, teacher_course):
 def class_selected(request, class_course):
     type = None
     active_blocks = student.check_active(class_course, datetime.now())
-    if len(active_blocks) == 1:
-        type = "block"
-    elif len(active_blocks) > 1:
-        type = "lesson"
-    return render(request, "class.html", {"active_blocks": active_blocks, "type": type})
+    if request.META['HTTP_X_FORWARDED_FOR'] in settings.ALLOWED_IP_BLOCKS:
+        if len(active_blocks) == 1:
+            type = "block"
+        elif len(active_blocks) > 1:
+            type = "lesson"
+        allow = True
+    else:
+        allow = False
+    return render(request, "class.html", {"active_blocks": active_blocks, "type": type, "allow": allow})
 
 
 #
