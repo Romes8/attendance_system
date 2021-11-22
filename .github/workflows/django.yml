@@ -29,9 +29,7 @@ jobs:
       run: |
         python manage.py test
     - name: Deploy to Heroku 
-      run: heroku git:remote --app $HEROKU_APP_NAME
-      env:
-        HEROKU_APP_NAME: ${{secrets.HEROKU_APP_NAME}}
+      run: heroku git:remote --app ${{secrets.HEROKU_APP_NAME}}
     - name: Push Heroku
       run: git push heroku master
 
