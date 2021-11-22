@@ -23,7 +23,7 @@ def login_page(request):
         user = authenticate(username=username, password=password)
         if user:
             login(request, user=user)
-            request.session.set_expiry(300)
+            request.session.set_expiry(1200)
             request.session['username'] = username
             request.session['role'] = user.role.name
             request.session['id'], request.session['name'] = database.get_userID_name(user.role.name, username)
