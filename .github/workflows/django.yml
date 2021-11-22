@@ -30,6 +30,7 @@ jobs:
         python manage.py test
     - name: Deploy to Heroku 
       run: |
+        heroku git:remote -a kea-attendance
         git config user.email "roman.zvoda@yahoo.com"
         git config user.name "Romes8"
         git add .
