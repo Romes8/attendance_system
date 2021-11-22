@@ -15,6 +15,6 @@ jobs:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       run: heroku login 
     - name: Add Heroku remote
-      run: heroku git:remote -a ${{secrets.HEROKU_APP_NAME}}
+      run: heroku git:remote -a kea-attendance
     - name: Push to Heroku
       run: git push heroku main
