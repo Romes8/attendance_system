@@ -55,6 +55,7 @@ def home_page(request):
 # tecahers - classes + courses they teach
 @login_required
 def index_page(request):
+    data =[]
     if request.session.get('role') == 'teacher':
         data = teacher.get_courses(request.session.get('id'))
     else:
