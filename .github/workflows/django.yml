@@ -13,7 +13,7 @@ jobs:
         - name: Deploy django to heroku
           uses: nyakaz73/heroku-django-deploy@v0.68 
           with: 
-            heroku_app_name : ${{ secrets.HEROKU_APP_NAME }}
-            heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+            heroku_app_name : kea-attendance
+            heroku_api_key: ad1fed52-0033-4295-acbf-843a1eff9d09
             heroku_email_address: 'romanzvoda@yahoo.com'
             use_git: true
