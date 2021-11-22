@@ -22,5 +22,9 @@ jobs:
         EOF
     - name: Add Heroku remote
       run: heroku git:remote --app kea-attendance
+    - name: Add
+      run: git add .
+    - name: Commit
+      run: git commit -m "deploy"
     - name: Push to Heroku
       run: git push heroku main
