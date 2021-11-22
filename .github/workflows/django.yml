@@ -31,6 +31,6 @@ jobs:
     - name: Deploy to Heroku 
       run: |
         git add .
-        git commint -m "deployed to Heroku | CI "
+        git commit -m "deployed to Heroku | CI "
         giut push heroku main 
 
