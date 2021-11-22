@@ -10,11 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Login to Heroku
-      env: 
-        HEROKU_API_KEY: ad1fed52-0033-4295-acbf-843a1eff9d09
-      run: heroku login 
+    - name: Heroku login credentials
+      run: |
+        cat > ~/.netrc <<EOF
+          machine api.heroku.com
+            login romanzvoda@yahoo.com
+            password ad1fed52-0033-4295-acbf-843a1eff9d09
+          machine git.heroku.com
+            login romanzvoda@yahoo.com
+            password ad1fed52-0033-4295-acbf-843a1eff9d09
+        EOF
     - name: Add Heroku remote
-      run: heroku git:remote -a kea-attendance
+      run: heroku git:remote --app kea-attendance
     - name: Push to Heroku
       run: git push heroku main
