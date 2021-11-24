@@ -27,7 +27,7 @@ def settings(id):
         query = Settings.objects.get(teacher=id)
         data = {
             'isBlocks': query.isblocks,
-            'period': query.checkinperiod * 60,
+            'period': query.checkinperiod,
             'reminder': query.reminder}
         print(data["period"])
         return data

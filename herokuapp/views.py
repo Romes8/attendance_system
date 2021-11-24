@@ -98,10 +98,10 @@ def active_class(request, teacher_course):
         settings = teacher.settings(request.session.get('id'))
         if settings['isBlocks']:
             teacher.activate_block(teacher_course, curDate, code)
-            threading.Timer(settings["period"], teacher.deactivate_block, [teacher_course, curDate]).start()
+            threading.Timer(settings["period"] * 60, teacher.deactivate_block, [teacher_course, curDate]).start()
         else:
             teacher.activate_lesson(teacher_course, curDate, code)
-            threading.Timer(settings["period"], teacher.deactivate_lesson, [teacher_course, curDate]).start()
+            threading.Timer(settings["period"] * 60, teacher.deactivate_lesson, [teacher_course, curDate]).start()
         return render(request, "active_page.html", {'code': code})
     return redirect('/index/')
 
