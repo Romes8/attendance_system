@@ -16,6 +16,26 @@
 {%endblock role%}
 
 {% block content %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Status', 'Number of times'],
+          ['Present',  {{present}}],
+          ['Absent',   {{absent}}],
+        ]);
+
+        var options = {
+          title: 'Attendance for the course',
+          is3D: true,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
+      }
+</script>
 <div class = "container-fluid" style="text-align: center;">
     <h2> {{ course }}</h2>
     <br></br>
@@ -23,6 +43,7 @@
 </div>
 <br></br>
 <div class="table-size">
+    <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
     <table class="table table-striped">
         <thead>
             <tr class="headers">

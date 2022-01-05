@@ -6,8 +6,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 import herokuapp.database as database
-import herokuapp.student as student
-import herokuapp.teacher as teacher
+from herokuapp.models import Teachers
+from herokuapp.student import Student
+from herokuapp.teacher import Teacher
 from datetime import datetime, timedelta
 import json
 import threading
@@ -56,9 +57,9 @@ def home_page(request):
 @login_required
 def index_page(request):
     if request.session.get('role') == 'teacher':
-        data = teacher.get_courses(request.session.get('id'))
+        data = Teacher.get_courses(request.session.get('id'))
     else:
-        data = student.get_courses(request.session.get('id'))
+        data = Student.get_courses(request.session.get('id'))
     return render(request, "index.html", {'data': data})
 
 
@@ -66,7 +67,7 @@ def index_page(request):
 @login_required
 def history_page(request):
     if request.session.get('role') == 'student':
-        data = student.history(request.session.get('id'), 'date')
+        data = Student.history(request.session.get('id'), 'date')
         return render(request, "history.html", {"data": data})
     else:
         return redirect('/index/')
@@ -80,8 +81,8 @@ def settings_page(request):
             isBlocks = request.POST.get('isBlocks')
             period = request.POST.get('period')
             reminder = request.POST.get('reminder')
-            teacher.saveChanges(request.session.get('id'), isBlocks, period, reminder)
-        data = teacher.settings(request.session.get('id'))
+            Teacher.saveChanges(request.session.get('id'), isBlocks, period, reminder)
+        data = Teacher.settings(request.session.get('id'))
         return render(request, "settings.html", {'data': data})
     else:
         return redirect('/index/')
@@ -95,13 +96,13 @@ def active_class(request, teacher_course):
         print(curDate)
         print("trynng 1")
         code = random_string()
-        settings = teacher.settings(request.session.get('id'))
+        settings = Teacher.settings(request.session.get('id'))
         if settings['isBlocks']:
-            teacher.activate_block(teacher_course, curDate, code)
-            threading.Timer(settings["period"] * 60, teacher.deactivate_block, [teacher_course, curDate]).start()
+            Teacher.activate_block(teacher_course, curDate, code)
+            threading.Timer(settings["period"] * 60, Teacher.deactivate_block, [teacher_course, curDate]).start()
         else:
-            teacher.activate_lesson(teacher_course, curDate, code)
-            threading.Timer(settings["period"] * 60, teacher.deactivate_lesson, [teacher_course, curDate]).start()
+            Teacher.activate_lesson(teacher_course, curDate, code)
+            threading.Timer(settings["period"] * 60, Teacher.deactivate_lesson, [teacher_course, curDate]).start()
         return render(request, "active_page.html", {'code': code})
     return redirect('/index/')
 
@@ -110,7 +111,7 @@ def active_class(request, teacher_course):
 @login_required
 def class_selected(request, class_course):
     type = None
-    active_blocks = student.check_active(class_course, datetime.now())
+    active_blocks = Student.check_active(class_course, datetime.now())
     if len(active_blocks) == 1:
         type = "block"
     elif len(active_blocks) > 1:
@@ -125,15 +126,15 @@ def class_selected(request, class_course):
 #
 @login_required
 def details_page(request, teacher_course, class_id):
-    students, subject_name = teacher.get_students(class_id, teacher_course)
+    students, subject_name = Teacher.get_students(class_id, teacher_course)
     return render(request, "details.html",
                   {"students": students, "teacher_course": teacher_course, "subject_name": subject_name})
 
 
 @login_required
 def student_details(request, teacher_course, student_id):
-    data, name, course = teacher.get_student_attendance(teacher_course, student_id)
-    return render(request, "student.html", {"data": data, "name": name, "course": course})
+    data, name, course, present, absent = Teacher.get_student_attendance(teacher_course, student_id)
+    return render(request, "student.html", {"data": data, "name": name, "course": course, "present": present, "absent":absent})
 
 
 def forgot_pass(request):
@@ -158,8 +159,8 @@ def check_code(request):
     code = data['code']
     blocks = data['blocks']
     student_id = data['student_id']
-    if student.check_entered_code(blocks, code):
-        if student.check_as_present(student_id, blocks):
+    if Student.check_entered_code(blocks, code):
+        if Student.check_as_present(student_id, blocks):
             return HttpResponse("Valid code! You are registered as present.")
         else:
             return HttpResponse("You already checked in as present.")
