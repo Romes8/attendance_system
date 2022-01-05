@@ -30,7 +30,7 @@ IPRESTRICT_GEOIP_ENABLED = False
 ALLOWED_HOSTS = ['kea-attendance.herokuapp.com', '127.0.0.1']
 
 LOGIN_URL = '/login/'
-ALLOWED_IP_BLOCKS = ['85.24.74.237', '94.18.243.162']
+ALLOWED_IP_BLOCKS = ['85.24.74.237', '94.18.243.162', '192.168.1.113']
 
 # Application definition
 
